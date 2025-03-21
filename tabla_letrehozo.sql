@@ -175,10 +175,7 @@ INSERT INTO Allomas VALUES (5, 'Pécs', 'Pécs');
 
 
 INSERT INTO Vasarlas VALUES (1, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user1', 1, 1, 1);
-INSERT INTO Vasarlas VALUES (2, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user2', 2, 2, 2);
-INSERT INTO Vasarlas VALUES (3, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user3', 3, 3, 3);
-INSERT INTO Vasarlas VALUES (4, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user4', 4, 4, 4);
-INSERT INTO Vasarlas VALUES (5, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user5', 5, 5, 5);
+
 
 
 INSERT INTO Alkalmazott VALUES (1, 'Kovács János', 'Jegyellenőr', 2000);
