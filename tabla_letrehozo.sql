@@ -147,5 +147,59 @@ INSERT INTO Jegy VALUES (3, 'Diák', 500, 1);
 INSERT INTO Jegy VALUES (4, 'Nyugdíjas', 500, 1);
 INSERT INTO Jegy VALUES (5, 'MÁK-ONYF', 100, 1);
 
+INSERT INTO Jarat VALUES (1, TO_DATE('2024-03-21 08:00', 'YYYY-MM-DD HH24:MI'), 1, 1);
+INSERT INTO Jarat VALUES (2, TO_DATE('2024-03-21 12:00', 'YYYY-MM-DD HH24:MI'), 2, 2);
+INSERT INTO Jarat VALUES (3, TO_DATE('2024-03-21 16:00', 'YYYY-MM-DD HH24:MI'), 3, 3);
+INSERT INTO Jarat VALUES (4, TO_DATE('2024-03-21 20:00', 'YYYY-MM-DD HH24:MI'), 4, 4);
+INSERT INTO Jarat VALUES (5, TO_DATE('2024-03-22 08:00', 'YYYY-MM-DD HH24:MI'), 5, 5);
+
+
+INSERT INTO Vonat VALUES (1, 50, 100);
+INSERT INTO Vonat VALUES (2, 60, 120);
+INSERT INTO Vonat VALUES (3, 70, 140);
+INSERT INTO Vonat VALUES (4, 80, 160);
+INSERT INTO Vonat VALUES (5, 90, 180);
+
+
+INSERT INTO Csatlakozas VALUES (1, 30, 10, 1, 2, 1);
+INSERT INTO Csatlakozas VALUES (2, 45, 20, 3, 4, 2);
+INSERT INTO Csatlakozas VALUES (3, 60, 30, 5, 1, 3);
+INSERT INTO Csatlakozas VALUES (4, 75, 40, 2, 3, 4);
+INSERT INTO Csatlakozas VALUES (5, 90, 50, 4, 5, 5);
+
+INSERT INTO Allomas VALUES (1, 'Budapest-Keleti', 'Budapest');
+INSERT INTO Allomas VALUES (2, 'Debrecen', 'Debrecen');
+INSERT INTO Allomas VALUES (3, 'Szeged', 'Szeged');
+INSERT INTO Allomas VALUES (4, 'Győr', 'Győr');
+INSERT INTO Allomas VALUES (5, 'Pécs', 'Pécs');
+
+
+INSERT INTO Vasarlas VALUES (1, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user1', 1, 1, 1);
+INSERT INTO Vasarlas VALUES (2, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user2', 2, 2, 2);
+INSERT INTO Vasarlas VALUES (3, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user3', 3, 3, 3);
+INSERT INTO Vasarlas VALUES (4, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user4', 4, 4, 4);
+INSERT INTO Vasarlas VALUES (5, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user5', 5, 5, 5);
+
+
+INSERT INTO Alkalmazott VALUES (1, 'Kovács János', 'Jegyellenőr', 2000);
+INSERT INTO Alkalmazott VALUES (2, 'Nagy Péter', 'Mozdonyvezető', 3000);
+INSERT INTO Alkalmazott VALUES (3, 'Szabó Anna', 'Pénztáros', 1800);
+INSERT INTO Alkalmazott VALUES (4, 'Tóth Béla', 'Karbantartó', 2200);
+INSERT INTO Alkalmazott VALUES (5, 'Varga Erika', 'Diszpécser', 2500);
+
+
+INSERT INTO Szabadsag VALUES (1, TO_DATE('2024-04-01', 'YYYY-MM-DD'), TO_DATE('2024-04-10', 'YYYY-MM-DD'), 1);
+INSERT INTO Szabadsag VALUES (2, TO_DATE('2024-04-11', 'YYYY-MM-DD'), TO_DATE('2024-04-20', 'YYYY-MM-DD'), 2);
+INSERT INTO Szabadsag VALUES (3, TO_DATE('2024-04-21', 'YYYY-MM-DD'), TO_DATE('2024-04-30', 'YYYY-MM-DD'), 3);
+INSERT INTO Szabadsag VALUES (4, TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'), 4);
+INSERT INTO Szabadsag VALUES (5, TO_DATE('2024-05-11', 'YYYY-MM-DD'), TO_DATE('2024-05-20', 'YYYY-MM-DD'), 5);
+
+
+INSERT INTO Munkabeosztas VALUES (1, 'Hétfő', TO_DATE('08:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI'), 1);
+INSERT INTO Munkabeosztas VALUES (2, 'Kedd', TO_DATE('08:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI'), 2);
+INSERT INTO Munkabeosztas VALUES (3, 'Szerda', TO_DATE('08:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI'), 3);
+INSERT INTO Munkabeosztas VALUES (4, 'Csütörtök', TO_DATE('08:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI'), 4);
+INSERT INTO Munkabeosztas VALUES (5, 'Péntek', TO_DATE('08:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI'), 5);
+
 
 
