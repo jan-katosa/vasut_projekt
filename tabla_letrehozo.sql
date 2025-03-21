@@ -174,7 +174,7 @@ INSERT INTO Allomas VALUES (4, 'Győr', 'Győr');
 INSERT INTO Allomas VALUES (5, 'Pécs', 'Pécs');
 
 
-INSERT INTO Vasarlas VALUES (1, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'user1', 1, 1, 1);
+INSERT INTO Vasarlas VALUES (1, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'Vevő Evelin', 1, 1, 1);
 
 
 
