@@ -134,6 +134,12 @@ INSERT INTO Felhasznalo VALUES ('Adminisztrátor Ármin', 'Adminvagyok', TO_DATE
 INSERT INTO Felhasznalo VALUES ('Hát Izsák', 'Vicces00', TO_DATE('1995-07-20', 'YYYY-MM-DD'), 1, 0);
 INSERT INTO Felhasznalo VALUES ('Vevő Evelin', 'VE12345', TO_DATE('2000-12-10', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Adminisztrátor Ádám', 'Testvér2', TO_DATE('1988-04-25', 'YYYY-MM-DD'), 1, 1);
+INSERT INTO Felhasznalo VALUES ('Geiger Dániel', 'GEG123', TO_DATE('2003-04-10', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Macska Alexandra', 'maxaxa343', TO_DATE('2002-10-21', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Macska Sándor', 'masand434', TO_DATE('2003-10-21', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Szabó Tamás', 'Goated12312', TO_DATE('1947-08-13', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Orbán Viktor', 'O1G', TO_DATE('1960-11-11', 'YYYY-MM-DD'), 0, 0);
+
 
 INSERT INTO Kedvezmeny VALUES (1, 'Diák', 50);
 INSERT INTO Kedvezmeny VALUES (2, 'Nyugdíjas', 50);
@@ -175,6 +181,10 @@ INSERT INTO Allomas VALUES (5, 'Pécs', 'Pécs');
 
 
 INSERT INTO Vasarlas VALUES (1, TO_DATE('2024-03-20', 'YYYY-MM-DD'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas VALUES (2, TO_DATE('2024-03-25', 'YYYY-MM-DD'), 'Orbán Viktor', 5, 2, 3);
+INSERT INTO Vasarlas VALUES (3, TO_DATE('2024-03-23', 'YYYY-MM-DD'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas VALUES (4, TO_DATE('2024-02-02', 'YYYY-MM-DD'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas VALUES (5, TO_DATE('2024-03-28', 'YYYY-MM-DD'), 'Szabó Tamás', 2, 1, 5);
 
 
 
