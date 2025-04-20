@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Település</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="allomas-adatok">
+        {% for allomas in allomas_adatok %}
+            <tr class="allomas-adat-sor">
+                <td class="allomas-id" data-id="{{ allomas.id }}">{{ allomas.id }}</td>
+                <td class="allomas-nev" data-nev="{{ allomas.nev }}">{{ allomas.nev }}</td>
+                <td class="allomas-varos" data-varos="{{ allomas.varos }}">{{ allomas.varos }}</td>
+                <td><button onclick="editAllomas({{ allomas.id }})">*</button></td>
+                <td><button onclick="deleteAllomas({{ allomas.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="nev-input" type="text" value="Név">
+    <input id="varos-input" type="text" value="Település">
+    <button onclick="ujAllomas()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+
+    <script>
+        var allomasTable = document.getElementById("allomas-adatok");
+        var nevInput = document.getElementById("nev-input");
+        var varosInput = document.getElementById("varos-input");
+
+        var editingAllomas = -1;
+
+        function editAllomas(id){
+            for(let i = 0; i<allomasTable.childNodes.length; i++){
+                if(allomasTable.childNodes[i].classList !== undefined){
+                    let idMezo = allomasTable.childNodes[i].querySelector(".allomas-id");
+                    let nevMezo = allomasTable.childNodes[i].querySelector(".allomas-nev");
+                    let varosMezo = allomasTable.childNodes[i].querySelector(".allomas-varos");
+                    if(idMezo.dataset.id==id){
+                        
+                        nevInput.value = nevMezo.dataset.nev;
+                        varosInput.value = varosMezo.dataset.varos;
+
+                        break;
+                    }
+                }
+            }
+            editingAllomas = id;
+        }
+
+        function deleteAllomas(id){
+
+            for(let i = 0; i<allomasTable.childNodes.length; i++){
+                if(allomasTable.childNodes[i].classList !== undefined){
+                    let allomasMezok = allomasTable.childNodes[i].childNodes;
+                    for(let j=0; j<allomasMezok.length; j++){
+                        if(allomasMezok[j].classList !== undefined && allomasMezok[j].classList.contains("allomas-id")){
+                            if(id == Number(allomasMezok[j].dataset.id)){
+                                allomasTable.childNodes[i].remove();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            editingAllomas = -1;
+        }
+
+        function ujAllomas(){
+            if(editingAllomas == -1){
+
+                let ujId = 0;
+                for(let i = 0; i<allomasTable.childNodes.length; i++){
+                    if(allomasTable.childNodes[i].classList !== undefined){
+                        let allomasMezok = allomasTable.childNodes[i].childNodes;
+                        for(let j=0; j<allomasMezok.length; j++){
+                            if(allomasMezok[j].classList !== undefined && allomasMezok[j].classList.contains("allomas-id")){
+                                if(ujId < Number(allomasMezok[j].dataset.id)){
+                                    ujId = Number(allomasMezok[j].dataset.id);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                ujId++;
+                let ujSor = document.createElement("tr");
+                ujSor.classList.add("allomas-adat-sor");
+                let ujData = '<td class="allomas-id" data-id="'+ujId+'">-</td><td class="allomas-nev" data-nev="'+nevInput.value+'">'+nevInput.value+'</td><td class="allomas-varos" data-varos="'+varosInput.value+'">'+varosInput.value+'</td><td>-</td><td><button onclick="deleteAllomas('+ujId+')">X</button></td>';
+                ujSor.innerHTML = ujData;
+                allomasTable.appendChild(ujSor);
+
+            }else{
+                for(let i = 0; i<allomasTable.childNodes.length; i++){
+                    if(allomasTable.childNodes[i].classList !== undefined){
+                        let allomasMezok = allomasTable.childNodes[i].childNodes;
+                        for(let j=0; j<allomasMezok.length; j++){
+                            if(allomasMezok[j].classList !== undefined && allomasMezok[j].classList.contains("allomas-id")){
+                                if(editingAllomas == Number(allomasMezok[j].dataset.id)){
+                                    let ujData = '<td class="allomas-id" data-id="'+editingAllomas+'">'+editingAllomas+'</td><td class="allomas-nev" data-nev="'+nevInput.value+'">'+nevInput.value+'</td><td class="allomas-varos" data-varos="'+varosInput.value+'">'+varosInput.value+'</td><td><button onclick="editAllomas('+editingAllomas+')">*</button></td><td><button onclick="deleteAllomas('+editingAllomas+')">X</button></td>';
+                                    allomasTable.childNodes[i].innerHTML = ujData;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            editingAllomas = -1;
+        }
+
+        function mentes(){
+
+            let data = [];
+
+            for(let i = 0; i<allomasTable.childNodes.length; i++){
+                if(allomasTable.childNodes[i].classList !== undefined){
+                    let idMezo = allomasTable.childNodes[i].querySelector(".allomas-id");
+                    let nevMezo = allomasTable.childNodes[i].querySelector(".allomas-nev");
+                    let varosMezo = allomasTable.childNodes[i].querySelector(".allomas-varos");
+
+                    let allomasData = {
+                        id: Number(idMezo.dataset.id),
+                        nev: nevMezo.dataset.nev,
+                        varos: varosMezo.dataset.varos,
+                    };
+
+                    data.push(allomasData);
+                }
+            }
+
+
+            fetch("/allomasok",
+                {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                    "Content-type": "application/json",
+                    },
+                })
+        }
+
+    </script>
+</body>
+</html>

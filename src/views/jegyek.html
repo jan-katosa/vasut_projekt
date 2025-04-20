@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Ár</th>
+                <th>Felhasználható</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="jegy-adatok">
+        {% for jegy in jegy_adatok %}
+            <tr class="jegy-adat-sor">
+                <td class="jegy-id" data-id="{{ jegy.id }}">{{ jegy.id }}</td>
+                <td class="jegy-nev" data-nev="{{ jegy.nev }}">{{ jegy.nev }}</td>
+                <td class="jegy-ar" data-ar="{{ jegy.ar }}">{{ jegy.ar }}</td>
+                <td class="jegy-felhasznalhato" data-felhasznalhato="{{ jegy.felhasznalhato }}">{{ jegy.felhasznalhato }}</td>
+                <td><button onclick="editJegy({{ jegy.id }})">*</button></td>
+                <td><button onclick="deleteJegy({{ jegy.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="nev-input" type="text" value="Név">
+    <input id="ar-input" type="number" value="2000">
+    <input id="felhasznalhato-input" type="number" value="3">
+    <button onclick="ujJegy()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+
+    <script>
+        var jegyTable = document.getElementById("jegy-adatok");
+        var nevInput = document.getElementById("nev-input");
+        var arInput = document.getElementById("ar-input");
+        var felhasznalhatoInput = document.getElementById("felhasznalhato-input");
+
+        var editingJegy = -1;
+
+        function editJegy(id){
+            for(let i = 0; i<jegyTable.childNodes.length; i++){
+                if(jegyTable.childNodes[i].classList !== undefined){
+                    let idMezo = jegyTable.childNodes[i].querySelector(".jegy-id");
+                    let nevMezo = jegyTable.childNodes[i].querySelector(".jegy-nev");
+                    let arMezo = jegyTable.childNodes[i].querySelector(".jegy-ar");
+                    let felhasznalhatoMezo = jegyTable.childNodes[i].querySelector(".jegy-felhasznalhato");
+                    if(idMezo.dataset.id==id){
+                        
+                        nevInput.value = nevMezo.dataset.nev;
+                        arInput.value = arMezo.dataset.ar;
+                        felhasznalhatoInput.value = felhasznalhatoMezo.dataset.felhasznalhato;
+
+                        break;
+                    }
+                }
+            }
+            editingJegy = id;
+        }
+
+        function deleteJegy(id){
+
+            for(let i = 0; i<jegyTable.childNodes.length; i++){
+                if(jegyTable.childNodes[i].classList !== undefined){
+                    let jegyMezok = jegyTable.childNodes[i].childNodes;
+                    for(let j=0; j<jegyMezok.length; j++){
+                        if(jegyMezok[j].classList !== undefined && jegyMezok[j].classList.contains("jegy-id")){
+                            if(id == Number(jegyMezok[j].dataset.id)){
+                                jegyTable.childNodes[i].remove();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            editingJegy = -1;
+        }
+
+        function ujJegy(){
+            if(editingJegy == -1){
+
+                let ujId = 0;
+                for(let i = 0; i<jegyTable.childNodes.length; i++){
+                    if(jegyTable.childNodes[i].classList !== undefined){
+                        let jegyMezok = jegyTable.childNodes[i].childNodes;
+                        for(let j=0; j<jegyMezok.length; j++){
+                            if(jegyMezok[j].classList !== undefined && jegyMezok[j].classList.contains("jegy-id")){
+                                if(ujId < Number(jegyMezok[j].dataset.id)){
+                                    ujId = Number(jegyMezok[j].dataset.id);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                ujId++;
+                let ujSor = document.createElement("tr");
+                ujSor.classList.add("jegy-adat-sor");
+                let ujData = '<td class="jegy-id" data-id="'+ujId+'">-</td><td class="jegy-nev" data-nev="'+nevInput.value+'">'+nevInput.value+'</td><td class="jegy-ar" data-ar="'+arInput.value+'">'+arInput.value+'</td><td class="jegy-felhasznalhato" data-felhasznalhato="'+felhasznalhatoInput.value+'">'+felhasznalhatoInput.value+'</td><td>-</td><td><button onclick="deleteJegy('+ujId+')">X</button></td>';
+                ujSor.innerHTML = ujData;
+                jegyTable.appendChild(ujSor);
+
+            }else{
+                for(let i = 0; i<jegyTable.childNodes.length; i++){
+                    if(jegyTable.childNodes[i].classList !== undefined){
+                        let jegyMezok = jegyTable.childNodes[i].childNodes;
+                        for(let j=0; j<jegyMezok.length; j++){
+                            if(jegyMezok[j].classList !== undefined && jegyMezok[j].classList.contains("jegy-id")){
+                                if(editingJegy == Number(jegyMezok[j].dataset.id)){
+                                    let ujData = '<td class="jegy-id" data-id="'+editingJegy+'">'+editingJegy+'</td><td class="jegy-nev" data-nev="'+nevInput.value+'">'+nevInput.value+'</td><td class="jegy-ar" data-ar="'+arInput.value+'">'+arInput.value+'</td><td class="jegy-felhasznalhato" data-felhasznalhato="'+felhasznalhatoInput.value+'">'+felhasznalhatoInput.value+'</td><td><button onclick="editJegy('+editingJegy+')">*</button></td><td><button onclick="deleteJegy('+editingJegy+')">X</button></td>';
+                                    jegyTable.childNodes[i].innerHTML = ujData;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            editingJegy = -1;
+        }
+
+        function mentes(){
+
+            let data = [];
+
+            for(let i = 0; i<jegyTable.childNodes.length; i++){
+                if(jegyTable.childNodes[i].classList !== undefined){
+                    let idMezo = jegyTable.childNodes[i].querySelector(".jegy-id");
+                    let nevMezo = jegyTable.childNodes[i].querySelector(".jegy-nev");
+                    let arMezo = jegyTable.childNodes[i].querySelector(".jegy-ar");
+                    let felhasznalhatoMezo = jegyTable.childNodes[i].querySelector(".jegy-felhasznalhato");
+
+                    let jegyData = {
+                        id: Number(idMezo.dataset.id),
+                        nev: nevMezo.dataset.nev,
+                        ar: Number(arMezo.dataset.ar),
+                        felhasznalhato: Number(arMezo.dataset.felhasznalhato),
+                    };
+
+                    data.push(jegyData);
+                }
+            }
+
+
+            fetch("/jegyek",
+                {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                    "Content-type": "application/json",
+                    },
+                })
+        }
+
+    </script>
+</body>
+</html>

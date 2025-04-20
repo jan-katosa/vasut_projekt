@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta chvonatset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Indulás</th>
+                <th>Vonat ID</th>
+                <th>Útvonal ID</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="jarat-adatok">
+        {% for jarat in jarat_adatok %}
+            <tr class="jarat-adat-sor">
+                <td class="jarat-id" data-id="{{ jarat.id }}">{{ jarat.id }}</td>
+                <td class="jarat-indulas" data-indulas="{{ jarat.indulas }}">{{ jarat.indulas }}</td>
+                <td class="jarat-vonat" data-vonat="{{ jarat.vonat }}">{{ jarat.vonat }}</td>
+                <td class="jarat-utvonal" data-utvonal="{{ jarat.utvonal }}"><button onclick="editUtvonal({{ jarat.id }})">{{ jarat.utvonal }}</button></td>
+                <td><button onclick="editJarat({{ jarat.id }})">*</button></td>
+                <td><button onclick="deleteJarat({{ jarat.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="indulas-input" type="number" value="1000">
+    <select id="vonat-input">
+        {% for vonat in vonat_adatok %}
+            <option {% if vonat.id == vonat_adatok[0].id %}selected{% endif %} value="{{ vonat.id }}">{{ vonat.id }}</option>
+        {% endfor %}
+    </select>
+    <button onclick="ujJarat()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+
+    <script>
+        var jaratTable = document.getElementById("jarat-adatok");
+        var indulasInput = document.getElementById("indulas-input");
+        var vonatInput = document.getElementById("vonat-input");
+
+        var editingJarat = -1;
+
+        var ujCsatlakozasId = {{max_csatlakozas_id}}+1;
+
+        function editUtvonal(id){
+
+        }
+
+        function editJarat(id){
+            for(let i = 0; i<jaratTable.childNodes.length; i++){
+                if(jaratTable.childNodes[i].classList !== undefined){
+                    let idMezo = jaratTable.childNodes[i].querySelector(".jarat-id");
+                    let indulasMezo = jaratTable.childNodes[i].querySelector(".jarat-indulas");
+                    let vonatMezo = jaratTable.childNodes[i].querySelector(".jarat-vonat");
+                    let utvonalMezo = jaratTable.childNodes[i].querySelector(".jarat-utvonal");
+                    if(idMezo.dataset.id==id){
+                        
+                        indulasInput.value = indulasMezo.dataset.indulas;
+                        vonatInput.value = vonatMezo.dataset.vonat;
+
+                        break;
+                    }
+                }
+            }
+            editingJarat = id;
+        }
+
+        function deleteJarat(id){
+
+            for(let i = 0; i<jaratTable.childNodes.length; i++){
+                if(jaratTable.childNodes[i].classList !== undefined){
+                    let jaratMezok = jaratTable.childNodes[i].childNodes;
+                    for(let j=0; j<jaratMezok.length; j++){
+                        if(jaratMezok[j].classList !== undefined && jaratMezok[j].classList.contains("jarat-id")){
+                            if(id == Number(jaratMezok[j].dataset.id)){
+                                jaratTable.childNodes[i].remove();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            editingJarat = -1;
+        }
+
+        function ujJarat(){
+            if(editingJarat == -1){
+
+                let ujId = 0;
+                for(let i = 0; i<jaratTable.childNodes.length; i++){
+                    if(jaratTable.childNodes[i].classList !== undefined){
+                        let jaratMezok = jaratTable.childNodes[i].childNodes;
+                        for(let j=0; j<jaratMezok.length; j++){
+                            if(jaratMezok[j].classList !== undefined && jaratMezok[j].classList.contains("jarat-id")){
+                                if(ujId < Number(jaratMezok[j].dataset.id)){
+                                    ujId = Number(jaratMezok[j].dataset.id);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                ujId++;
+                let ujSor = document.createElement("tr");
+                ujSor.classList.add("jarat-adat-sor");
+                let ujData = '<td class="jarat-id" data-id="'+ujId+'">-</td><td class="jarat-indulas" data-indulas="'+indulasInput.value+'">'+indulasInput.value+'</td><td class="jarat-vonat" data-vonat="'+vonatInput.value+'">'+vonatInput.value+'</td><td class="jarat-utvonal" data-utvonal="'+ujCsatlakozasId+'"><button onclick="editUtvonal('+ujId+')">'+ujCsatlakozasId+'</button></td><td>-</td><td><button onclick="deleteJarat('+ujId+')">X</button></td>';
+                ujCsatlakozasId++;
+                ujSor.innerHTML = ujData;
+                jaratTable.appendChild(ujSor);
+
+            }else{
+                for(let i = 0; i<jaratTable.childNodes.length; i++){
+                    if(jaratTable.childNodes[i].classList !== undefined){
+                        let jaratMezok = jaratTable.childNodes[i].childNodes;
+                        for(let j=0; j<jaratMezok.length; j++){
+                            if(jaratMezok[j].classList !== undefined && jaratMezok[j].classList.contains("jarat-id")){
+                                if(editingJarat == Number(jaratMezok[j].dataset.id)){
+                                    let ujData = '<td class="jarat-id" data-id="'+editingJarat+'">'+editingJarat+'</td><td class="jarat-indulas" data-indulas="'+indulasInput.value+'">'+indulasInput.value+'</td><td class="jarat-vonat" data-vonat="'+vonatInput.value+'">'+vonatInput.value+'</td><td class="jarat-utvonal" data-utvonal="'+ujCsatlakozasId+'"><button onclick="editUtvonal('+editingJarat+')">'+ujCsatlakozasId+'</button></td><td><button onclick="editJarat('+editingJarat+')">*</button></td><td><button onclick="deleteJarat('+editingJarat+')">X</button></td>';
+                                    jaratTable.childNodes[i].innerHTML = ujData;
+                                    ujCsatlakozasId++;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            editingJarat = -1;
+        }
+
+        function mentes(){
+
+            let data = [];
+
+            for(let i = 0; i<jaratTable.childNodes.length; i++){
+                if(jaratTable.childNodes[i].classList !== undefined){
+                    let idMezo = jaratTable.childNodes[i].querySelector(".jarat-id");
+                    let indulasMezo = jaratTable.childNodes[i].querySelector(".jarat-indulas");
+                    let vonatMezo = jaratTable.childNodes[i].querySelector(".jarat-vonat");
+                    let utvonalMezo = jaratTable.childNodes[i].querySelector(".jarat-utvonal");
+
+                    let jaratData = {
+                        id: Number(idMezo.dataset.id),
+                        indulas: indulasMezo.dataset.indulas,
+                        vonat: Number(vonatMezo.dataset.vonat),
+                        utvonal: Number(vonatMezo.dataset.utvonal),
+                    };
+
+                    data.push(jaratData);
+                }
+            }
+
+
+            fetch("/jaratok",
+                {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                    "Content-type": "application/json",
+                    },
+                })
+        }
+
+    </script>
+</body>
+</html>
