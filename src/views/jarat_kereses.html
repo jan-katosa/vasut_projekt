@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="kereses-div">
+        <select name="indulas-varos" id="indulas-varos"></select>
+        <label for="indulas-varos">Indulás helye</label>
+
+        <input name="indulas-ido" id="indulas-ido" type="datetime-local">
+        <label for="indulas-ido">Indulás ideje</label>
+
+        <select name="erkezes-varos" id="erkezes-varos"></select>
+        <label for="erkezes-varos">Érkezés helye</label>
+
+        <input name="erkezes-ido" id="erkezes-ido" type="datetime-local">
+        <label for="erkezes-ido">Érkezés ideje</label>
+
+        <input name="ar-limit" id="ar-limit" type="number">
+        <label for="ar-limit">Ár limit</label>
+
+        <input type="submit" value="Keresés">
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Indulás helye
+                </th>
+                <th>
+                    Indulás ideje
+                </th>
+                <th>
+                    Érkezés helye
+                </th>
+                <th>
+                    Érkezés ideje
+                </th>
+                <th>
+                    Jegyek vásárlása
+                </th>
+            </tr>
+        </thead>
+        <tbody class="utvonal-talalat">
+            <tr>
+                <td>
+                    Szeged, állomás 1
+                </td>
+                <td>
+                    2000
+                </td>
+                <td>
+                    Szeged, állomás 2
+                </td>
+                <td>
+                    2500
+                </td>
+                <td>
+                    <button>Kosárba</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Szeged, állomás 2
+                </td>
+                <td>
+                    2500
+                </td>
+                <td>
+                    Budapest, állomás 1
+                </td>
+                <td>
+                    3000
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Budapest, állomás 1
+                </td>
+                <td>
+                    3000
+                </td>
+                <td>
+                    Veszprém, állomás 2
+                </td>
+                <td>
+                    4000
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -2,8 +2,48 @@ from flask import Flask
 from flask import render_template
 from flask import request
 
-#import getpass
-#import oracledb
+import getpass
+import oracledb
+
+def execute_sql(sql_file, db_cursor):
+    with open(sql_file, "r", encoding="utf-8") as f:
+        statement_parts = []
+        for line in f:
+            if line[0] == "-" and line[1] == "-":
+                continue
+            if line.strip() == "/":
+                statement = "".join(statement_parts).strip()
+                if statement:
+                    print(statement)
+                    try:
+                        db_cursor.execute(statement)
+                    except:
+                        print("Failed to execute SQL:", statement)
+                        raise
+                statement_parts = []
+            else:
+                statement_parts.append(line)
+
+
+
+un = input("Enter database username: ").strip()
+pw = getpass.getpass("Enter database password for "+un+": ")
+
+connection = oracledb.connect(
+    user=un,
+    password=pw,
+    host="localhost",
+    port="1521",
+    sid="orania2")
+
+print("Successfully connected to Oracle Database")
+
+cursor = connection.cursor()
+
+execute_sql("tabla_letrehozo.sql", cursor)
+connection.commit()
+
+connection.close()
 
 
 app = Flask(__name__, template_folder="views")
@@ -183,4 +223,5 @@ def jegyek():
     return render_template("jegyek.html", jegy_adatok=jegy_adatok)
 
 
+#connection.close()
 
