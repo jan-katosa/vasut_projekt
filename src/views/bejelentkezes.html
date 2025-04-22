@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Bejelentkezés</title>
+</head>
+<body>
+    <h2>Bejelentkezés</h2>
+    <form action="/bejelentkezes" method="post">
+        <label for="username">Felhasználónév:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Jelszó:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Bejelentkezés</button>
+    </form>
+
+    <p>Nincs még fiókod? <a href="/regisztracio">Regisztrálj itt</a></p>
+</body>
+</html>
