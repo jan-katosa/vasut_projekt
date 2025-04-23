@@ -178,7 +178,7 @@ INSERT INTO Kedvezmeny (nev, kedvezmeny_szazalek) VALUES ('Családi', 70);
 INSERT INTO Kedvezmeny (nev, kedvezmeny_szazalek) VALUES ('Hétvégi', 70);
 INSERT INTO Kedvezmeny (nev, kedvezmeny_szazalek) VALUES ('MÁK-ONYF', 10);
 
-<<<<<<< HEAD
+--<<<<<<< HEAD
 INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('Másodosztály', 1000, 1);
 INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('Elsőosztály', 2000, 1);
 INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('Diák', 500, 1);
@@ -239,7 +239,7 @@ INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (2, 480,
 INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (3, 480, 960, 4);
 INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (4, 480, 960, 5);
 
-=======
+
 INSERT INTO Jegy VALUES (1, 'Másodosztály', 1000, 1);
 INSERT INTO Jegy VALUES (2, 'Elsőosztály', 2000, 1);
 INSERT INTO Jegy VALUES (3, 'Diák', 500, 1);
