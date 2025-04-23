@@ -94,7 +94,7 @@ def bejelentkezes():
 
     connection, cursor = get_db()
 
-    felhasznalok = []
+    felhasznalok = {}
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
@@ -117,7 +117,7 @@ def regisztracio():
 
     connection, cursor = get_db()
 
-    felhasznalok = []
+    felhasznalok = {}
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
@@ -132,7 +132,7 @@ def regisztracio():
         felhasznalok[username] = {"password": hashed_pw, "szul_ido":datetime.datetime(2020, 5, 17), "alkalmazott":0, "administrator":0}
         session["user"] = username
 
-        cursor.execute("insert into Felhasznalo values (:un, :pw, :szi, :alk, :admin)", [hashed_pw, datetime.datetime(2020, 5, 17), 0, 0])
+        cursor.execute("insert into Felhasznalo values (:un, :pw, :szi, :alk, :admin)", [username, hashed_pw, datetime.datetime(2020, 5, 17), 0, 0])
         connection.commit()
 
         return redirect(url_for("index"))
