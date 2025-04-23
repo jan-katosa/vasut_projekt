@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style/style.scss">
+    <link rel="stylesheet" href="/src/style/users.scss">
+    <title>Felhasználók</title>
+</head>
+<body>
+    <div class="main-container">
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Név</th>
+                        <th>Születési Dátum</th>
+                        <th>Alkalmazott</th>
+                        <th>Adminsztrátor</th>
+                        <th>Szerkesztés</th>
+                        <th>Törlés</th>
+                    </tr>
+                </thead>
+                <tbody id="felhasznalo-adatok">
+                {% for felhasznalo in felhasznalo_adatok %}
+                    <tr>
+                        <td data-nev="{{ felhasznalo.nev }}">{{ felhasznalo.nev }}</td>
+                        <td data-datum="{{ felhasznalo.datum }}">{{ felhasznalo.datum }}</td>
+                        <td data-alkalmazott="{{ felhasznalo.alkalmazott }}">{{ felhasznalo.alkalmazott }}</td>
+                        <td data-adminisztrator="{{ felhasznalo.adminsztrator }}">{{ felhasznalo.adminisztrator }}</td>
+                        <td><button onclick="editFelhasznalo({{ felhasznalo.nev }})">*</button></td>
+                        <td><button onclick="deleteFelhasznalo({{ felhasznalo.nev }})">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <input id="alkalmazott-input" type="checkbox" value="Alkalmazott">
+            <input id="adminisztrator-input" type="checkbox" value="Adminsztrátor">
+        </div>
+    </div>
+
+
+    <!--- Scripts --->
+    <script>
+        var felhasznaloTable = document.getElementById("felhasznalo-adatok");
+        var alkalmazottInput = document.getElementById("alkalmazott-input");
+        var adminisztratorInput = document.getElementById("adminisztrator-input");
+
+        var editingFelhasznalo = -1;
+
+        
+    </script>
+</body>
+</html>

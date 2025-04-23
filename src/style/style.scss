@@ -1,0 +1,23 @@
+$main_color: #f2ab5e;
+$secondary_color: #d0e2f5;
+$tertiary_color: #ff5900;
+
+body {
+    background-color: $secondary_color;
+}
+
+.main-container {
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation-bar {
+    background-color: $main_color;
+    flex-direction: row;
+}
+
+.header-container {
+    background-color: $tertiary_color;
+    border-radius: 5px;
+    border-color: black;
+}

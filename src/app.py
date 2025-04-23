@@ -498,3 +498,45 @@ def jegyek():
     return render_template("jegyek.html", jegy_adatok=jegy_adatok)
 
 
+@app.route("/felhasznalok", methods=['POST', 'GET'])
+def felhasznalok():
+    global felhasznalok
+
+    connection, cursor = get_db()
+    
+
+    # Checking if administrator is in session
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+    
+
+    # Loading in users from database
+    # (biztos vagyok benne, hogy ezt lehetne a dictbol is megoldani, de nincs agyi erom ra most)
+    felhasznalo_adatok = []
+
+    for row in cursor.execute("select * from Jegy"):
+        felhasznalo_adatok.append({"nev":row[0], "datum":row[2], "alkalmazott":row[3], "adminisztrator":row[4]})
+
+
+#@app.route("/kedvezmenyek", methods=['POST', 'GET'])
+def kedvezmenyek():
+    pass
+
+
+#@app.route("/alkalmazottak", methods=['POST', 'GET'])
+def alkalmazottak():
+    pass
+
+
+#@app.route("/szabadsagok", methods=['POST', 'GET'])
+def szabadsagok():
+    pass
+
+
+#@app.route("/munkabeosztas", methods=['POST', 'GET'])
+def munkabeosztas():
+    pass
