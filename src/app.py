@@ -9,8 +9,10 @@ import oracledb
 
 def get_db():
     if 'db' not in g:
-        un = input("Enter database username: ").strip()
-        pw = getpass.getpass("Enter database password for " + un + ": ")
+        #un = input("Enter database username: ").strip()
+        #pw = getpass.getpass("Enter database password for " + un + ": ")
+        un = "C##Q8AUMD"
+        pw = "Q8AUMD"
         g.db = oracledb.connect(
             user=un,
             password=pw,
@@ -135,6 +137,10 @@ def regisztracio():
         cursor.execute("insert into Felhasznalo values (:un, :pw, :szi, :alk, :admin)", [username, hashed_pw, datetime.datetime(2020, 5, 17), 0, 0])
         connection.commit()
 
+        felhasznalok = {}
+        for row in cursor.execute("select * from Felhasznalo"):
+            felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
         return redirect(url_for("index"))
 
     return render_template("regisztracio.html")
@@ -152,10 +158,14 @@ def vonatok():
     global vonat_adatok
     global felhasznalok
 
-    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
-        return redirect(url_for("bejelentkezes"))
-
     connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
     vonat_adatok = []
 
@@ -216,10 +226,14 @@ def jaratok():
     global jarat_adatok
     global felhasznalok
 
-    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
-        return redirect(url_for("bejelentkezes"))
-
     connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
     csatlakozas_adatok = []
     for row in cursor.execute("select * from Csatlakozas"):
@@ -242,10 +256,14 @@ def allomasok():
     global allomas_adatok
     global felhasznalok
 
-    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
-        return redirect(url_for("bejelentkezes"))
-
     connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
     allomas_adatok = []
 
@@ -305,10 +323,14 @@ def jegyek():
     global jegy_adatok
     global felhasznalok
 
-    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
-        return redirect(url_for("bejelentkezes"))
-
     connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
     jegy_adatok = []
 
