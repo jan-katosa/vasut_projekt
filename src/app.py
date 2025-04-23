@@ -9,10 +9,9 @@ import oracledb
 
 def get_db():
     if 'db' not in g:
-        #un = input("Enter database username: ").strip()
-        #pw = getpass.getpass("Enter database password for " + un + ": ")
-        un = "C##Q8AUMD"
-        pw = "Q8AUMD"
+        un = input("Enter database username: ").strip()
+        pw = getpass.getpass("Enter database password for " + un + ": ")
+        
         g.db = oracledb.connect(
             user=un,
             password=pw,
@@ -22,10 +21,6 @@ def get_db():
         )
         g.cursor = g.db.cursor()
         print("Successfully connected to Oracle Database")
-
-        # Only on first connection
-        #execute_sql("tabla_letrehozo.sql", g.cursor)
-        #g.db.commit()
     
     return g.db, g.cursor
 
@@ -44,42 +39,15 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
-vonat_adatok = [
-    {"id":0, "elsoosztaly":10, "masodosztaly":60},
-    {"id":1, "elsoosztaly":20, "masodosztaly":50},
-    {"id":2, "elsoosztaly":15, "masodosztaly":100},
-    {"id":3, "elsoosztaly":25, "masodosztaly":200},
-]
+vonat_adatok = []
 
-allomas_adatok = [
-    {"id":0, "nev":"állomás 1", "varos":"Szeged"},
-    {"id":1, "nev":"állomás 2", "varos":"Szeged"},
-    {"id":2, "nev":"állomás 3", "varos":"Szeged 2"},
-    {"id":3, "nev":"állomás 4", "varos":"Szeged 3"},
-]
+allomas_adatok = []
 
-jegy_adatok = [
-    {"id":0, "nev":"jegy 1", "ar":2000, "felhasznalhato":3},
-    {"id":1, "nev":"jegy 2", "ar":1000, "felhasznalhato":1},
-    {"id":2, "nev":"jegy 3", "ar":4000, "felhasznalhato":7},
-    {"id":3, "nev":"jegy 4", "ar":5500, "felhasznalhato":6},
-]
+jegy_adatok = []
 
-csatlakozas_adatok = [
-    {"id":0, "idotartam":30, "hossz":12.0, "elso_id":0, "masodik_id":1, "jarat_id":0},
-    {"id":1, "idotartam":20, "hossz":14.0, "elso_id":1, "masodik_id":2, "jarat_id":0},
-    {"id":2, "idotartam":15, "hossz":10.0, "elso_id":0, "masodik_id":2, "jarat_id":1},
-    {"id":3, "idotartam":20, "hossz":15.0, "elso_id":0, "masodik_id":1, "jarat_id":2},
-    {"id":4, "idotartam":40, "hossz":25.0, "elso_id":1, "masodik_id":3, "jarat_id":2},
-    {"id":5, "idotartam":30, "hossz":30.0, "elso_id":2, "masodik_id":3, "jarat_id":3},
-]
+csatlakozas_adatok = []
 
-jarat_adatok = [
-    {"id":0, "indulas":1000, "vonat":0, "utvonal":0},
-    {"id":1, "indulas":2000, "vonat":0, "utvonal":2},
-    {"id":2, "indulas":3000, "vonat":1, "utvonal":3},
-    {"id":3, "indulas":4000, "vonat":2, "utvonal":5},
-]
+jarat_adatok = []
 
 felhasznalok = {}
 
