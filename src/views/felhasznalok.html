@@ -24,10 +24,10 @@
                 <tbody id="felhasznalo-adatok">
                 {% for felhasznalo in felhasznalo_adatok %}
                     <tr>
-                        <td data-nev="{{ felhasznalo.nev }}">{{ felhasznalo.nev }}</td>
-                        <td data-datum="{{ felhasznalo.datum }}">{{ felhasznalo.datum }}</td>
-                        <td data-alkalmazott="{{ felhasznalo.alkalmazott }}">{{ felhasznalo.alkalmazott }}</td>
-                        <td data-adminisztrator="{{ felhasznalo.adminsztrator }}">{{ felhasznalo.adminisztrator }}</td>
+                        <td class="felhasznalo-nev" data-nev="{{ felhasznalo.nev }}">{{ felhasznalo.nev }}</td>
+                        <td class="felhasznalo-datum" data-datum="{{ felhasznalo.datum }}">{{ felhasznalo.datum }}</td>
+                        <td class="felhasznalo-alkalmazott" data-alkalmazott="{{ felhasznalo.alkalmazott }}">{{ felhasznalo.alkalmazott }}</td>
+                        <td class="felhasznalo-adminisztrator" data-adminisztrator="{{ felhasznalo.adminsztrator }}">{{ felhasznalo.adminisztrator }}</td>
                         <td><button onclick="editFelhasznalo({{ felhasznalo.nev }})">*</button></td>
                         <td><button onclick="deleteFelhasznalo({{ felhasznalo.nev }})">X</button></td>
                     </tr>
@@ -49,7 +49,27 @@
 
         var editingFelhasznalo = -1;
 
-        
+        function editFelhasznalo(id) {
+            for(let i = 0; i < felhasznaloTable.childNodes.length; i++) {
+                if(felhasznaloTable.childNodes[i].classList !== undefined) {
+                    let nevField = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-nev");
+                    let alkalmazottCheck = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-alkalmazott");
+                    let adminisztratorCheck = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-adminisztrator");
+                    
+                    if(nevField.dataset.nev == nev) {
+                        alkalmazottInput.value = nevField.dataset.alkalmazott;
+                        adminisztratorInput = nevField.dataset.adminisztrator;
+
+                        break;
+                    }
+                }
+            }
+            editingFelhasznalo = id;
+        }
+
+        function deleteFelhasznalo(id) {}
+
+        function ujFelhasznalo(id) {}
     </script>
 </body>
 </html>
