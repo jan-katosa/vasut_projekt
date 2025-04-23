@@ -23,4 +23,3 @@ A feladat egy olyan alkalmazást foglal magába, amelyen keresztül egy vasútt�
 
 - Adatok hozzáadásánál/szerkesztésénél először a **"+"** jeles gombra kell nyomni, aztán a **"mentés"** gombra.
 - Lehetséges, hogy a html oldalaknál hibákat jelez ha egy IDE-ben van megtekintve, de működik az oldal.
-- Jelenleg az app lekéri az Oracle adatbázis adatokat amikor az indexről másik oldalra lépünk. Ha az **"app.py"** fájlban a **"get_db"** függvényben (fájl teteje fele) az **"un"** változót a felhasználónévre, a **"pw"** változót a jelszóra átírjuk amíg teszteljük az appot, akkor csak az oldal indításakor kéri le.
