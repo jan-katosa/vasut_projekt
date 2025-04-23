@@ -30,7 +30,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <input id="indulas-input" type="number" value="1000">
+    <input id="indulas-input" type="datetime-local" value="2025-06-12T16:30">
     <select id="vonat-input">
         {% for vonat in vonat_adatok %}
             <option {% if vonat.id == vonat_adatok[0].id %}selected{% endif %} value="{{ vonat.id }}">{{ vonat.id }}</option>
@@ -53,8 +53,9 @@
 
         var ujCsatlakozasId = {{max_csatlakozas_id}}+1;
 
-        function editUtvonal(id){
 
+        function editUtvonal(id){
+            location.href="/utvonal/"+id;
         }
 
         function editJarat(id){
@@ -151,9 +152,11 @@
                     let vonatMezo = jaratTable.childNodes[i].querySelector(".jarat-vonat");
                     let utvonalMezo = jaratTable.childNodes[i].querySelector(".jarat-utvonal");
 
+                    let ido = new Date(indulasMezo.dataset.indulas);
+
                     let jaratData = {
                         id: Number(idMezo.dataset.id),
-                        indulas: indulasMezo.dataset.indulas,
+                        indulas: ido.toUTCString(),
                         vonat: Number(vonatMezo.dataset.vonat),
                         utvonal: Number(vonatMezo.dataset.utvonal),
                     };

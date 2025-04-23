@@ -139,37 +139,7 @@ INSERT INTO Felhasznalo VALUES ('Macska Alexandra', 'maxaxa343', TO_DATE('2002-1
 INSERT INTO Felhasznalo VALUES ('Macska Sándor', 'masand434', TO_DATE('2003-10-21', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Szabó Tamás', 'Goated12312', TO_DATE('1947-08-13', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Orbán Viktor', 'O1G', TO_DATE('1960-11-11', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user1', 'jelszo123', TO_DATE('1995-01-10', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user2', 'jelszo456', TO_DATE('1990-03-15', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user3', 'jelszo789', TO_DATE('1988-06-22', 'YYYY-MM-DD'), 0, 1);
-INSERT INTO Felhasznalo VALUES ('user4', 'abc123', TO_DATE('1992-12-03', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user5', 'pw1234', TO_DATE('1998-07-09', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user6', 'pw5678', TO_DATE('1993-04-28', 'YYYY-MM-DD'), 1, 1);
-INSERT INTO Felhasznalo VALUES ('user7', 'secret1', TO_DATE('1985-10-10', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user8', 'secret2', TO_DATE('2000-02-02', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user9', 'pw999', TO_DATE('1975-08-30', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user10', 'pw000', TO_DATE('1991-11-25', 'YYYY-MM-DD'), 0, 1);
-INSERT INTO Felhasznalo VALUES ('user11', 'abc456', TO_DATE('1987-09-14', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user12', 'abc789', TO_DATE('1999-05-01', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user13', 'zxc123', TO_DATE('1994-03-30', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user14', 'zxc456', TO_DATE('1989-08-18', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user15', 'pass123', TO_DATE('2001-07-07', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user16', 'pass456', TO_DATE('1997-11-20', 'YYYY-MM-DD'), 1, 1);
-INSERT INTO Felhasznalo VALUES ('user17', 'qwe123', TO_DATE('1996-01-15', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user18', 'qwe456', TO_DATE('1983-04-10', 'YYYY-MM-DD'), 0, 1);
-INSERT INTO Felhasznalo VALUES ('user19', 'lol123', TO_DATE('1990-06-11', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user20', 'lol456', TO_DATE('1986-02-28', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user21', 'admin1', TO_DATE('1979-10-05', 'YYYY-MM-DD'), 1, 1);
-INSERT INTO Felhasznalo VALUES ('user22', 'admin2', TO_DATE('1982-12-19', 'YYYY-MM-DD'), 0, 1);
-INSERT INTO Felhasznalo VALUES ('user23', 'admin3', TO_DATE('1993-09-03', 'YYYY-MM-DD'), 1, 1);
-INSERT INTO Felhasznalo VALUES ('user24', 'admin4', TO_DATE('1995-05-16', 'YYYY-MM-DD'), 0, 1);
-INSERT INTO Felhasznalo VALUES ('user25', 'test123', TO_DATE('1996-08-08', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user26', 'test456', TO_DATE('1984-07-12', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user27', 'tryme', TO_DATE('1991-03-04', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('user28', 'letmein', TO_DATE('2002-01-01', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('user29', 'root123', TO_DATE('1980-06-06', 'YYYY-MM-DD'), 1, 1);
-INSERT INTO Felhasznalo VALUES ('user30', 'root456', TO_DATE('1988-11-11', 'YYYY-MM-DD'), 1, 1);
-
+INSERT INTO Felhasznalo VALUES ('asd', 'scrypt:32768:8:1$W6Un2OWiKJpqYzSe$67f2a346b1ac9d17fa2b06cc56dd37b0a9493af21d81a849adcbc5592b4c335157d9f74644f4eeb3f5e802545f478bbbe2d16160c3f601baeb982da2d00c61a6', TO_DATE('1995-01-10', 'YYYY-MM-DD'), 0, 1);
 
 
 INSERT INTO Kedvezmeny (nev, kedvezmeny_szazalek) VALUES ('Diák', 50);

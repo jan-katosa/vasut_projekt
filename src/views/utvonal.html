@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="allomas-adatok" data-allomasok="{{allomas_adatok}}">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Időtartam a következő állomásig (perc)</th>
+                <th>Hossz a következő állomásig (km)</th>
+                <th>Állomás ID</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="csatlakozas-tabla">
+            {% for csatlakozas in csatlakozas_adatok %}
+                <tr class="csatlakozas-sor" data-id="{{csatlakozas.id}}" data-elso="1">
+                    <td>{{csatlakozas.id}}</td>
+                    <td><input class="idotartam-input" type="number" value="{{csatlakozas.idotartam}}"></td>
+                    <td><input class="hossz-input" type="number" value="{{csatlakozas.hossz}}"></td>
+                    <td>
+                        <select onfocus="this.oldvalue = this.value;" onchange="allomasChanged(this)" class="allomas-input">
+                            {% for allomas in allomas_adatok %}
+                                <option value="{{allomas.id}}" {% if allomas.id == csatlakozas.elso_id %}selected{% endif %}>
+                                    {{allomas.varos}}, {{allomas.nev}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        {% if csatlakozas.id != csatlakozas_adatok[0].id %}
+                            <button onclick="torles({{csatlakozas.id}})">X</button>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+                <tr class="csatlakozas-sor" data-id="{{csatlakozas_adatok[-1].id}}" data-elso="0">
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <select onfocus="this.oldvalue = this.value;" onchange="allomasChanged(this)" class="allomas-input">
+                            {% for allomas in allomas_adatok %}
+                                <option value="{{allomas.id}}" {% if allomas.id == csatlakozas_adatok[-1].masodik_id %}selected{% endif %}>
+                                    {{allomas.varos}}, {{allomas.nev}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>-</td>
+                </tr>
+        </tbody>
+    </table>
+
+    <button onclick="ujAllomas()">Új állomás</button><br>
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+    <script>
+        var csatlakozasTabla = document.getElementById("csatlakozas-tabla");
+        var allomasAdatokStr = document.getElementById("allomas-adatok").dataset.allomasok;
+        allomasAdatokStr = allomasAdatokStr.replaceAll("'",'"');
+        var allomasAdatok = JSON.parse(allomasAdatokStr);
+
+        function torles(id){
+            let csatlakozasSorok = csatlakozasTabla.querySelectorAll(".csatlakozas-sor");
+            for(let i=0; i<csatlakozasSorok.length; i++){
+                if(csatlakozasSorok[i].dataset.id == id){
+                    csatlakozasSorok[i].remove();
+                    break;
+                }
+            }
+        }
+
+        function ujAllomas(){
+            let csatlakozasSorok = csatlakozasTabla.querySelectorAll(".csatlakozas-sor");
+            if(csatlakozasSorok.length < allomasAdatok.length){
+                let utolsoSor = csatlakozasSorok[csatlakozasSorok.length-1];
+                let ujSor = document.createElement("tr");
+
+                ujSor.classList.add("csatlakozas-sor");
+                ujSor.dataset.id = Number(utolsoSor.dataset.id)+1;
+                utolsoSor.dataset.id = Number(utolsoSor.dataset.id)+1;
+
+                let nemHasznaltAllomasok = [];
+                for(let i=0; i<allomasAdatok.length; i++){
+                    nemHasznaltAllomasok.push([i,allomasAdatok[i].id]);
+                }
+
+                for(let i=0; i<csatlakozasSorok.length; i++){
+                    let sorAllomas = csatlakozasSorok[i].querySelector(".allomas-input");
+                    for(let j=0; j<nemHasznaltAllomasok.length; j++){
+                        if(nemHasznaltAllomasok[j][1] == sorAllomas.value){
+                            nemHasznaltAllomasok.splice(j,1);
+                            break;
+                        }
+                    }
+                }
+
+                let ujSorAllomas = utolsoSor.querySelector(".allomas-input").value;
+                utolsoSor.querySelector(".allomas-input").value = nemHasznaltAllomasok[0][1];
+
+                ujSorHTML = '<td>'+ujSor.dataset.id+'</td><td><input class="idotartam-input" type="number" value="'+20+'"></td><td><input class="hossz-input" type="number" value="'+10+'"></td><select onfocus="this.oldvalue = this.value;" onchange="allomasChanged(this)" class="allomas-input">';
+                for(let i=0; i<allomasAdatok.length; i++){
+                    ujSorHTML+='<option value="'+allomasAdatok[i].id+'" ';
+                    if(allomasAdatok[i].id == ujSorAllomas){
+                        ujSorHTML+="selected ";
+                    }
+                    ujSorHTML+='>'+allomasAdatok[i].varos+', '+allomasAdatok[i].nev+'</option>';
+                }
+                ujSorHTML+='</select></td><td><button onclick="torles('+ujSor.dataset.id+')">X</button></td>';
+                ujSor.innerHTML = ujSorHTML;
+                csatlakozasTabla.insertBefore(ujSor, utolsoSor);
+            }
+        }
+
+        function allomasChanged(select){
+            let csatlakozasSorok = csatlakozasTabla.querySelectorAll(".csatlakozas-sor");
+            for(let i=0; i<csatlakozasSorok.length; i++){
+                let allomasInput = csatlakozasSorok[i].querySelector(".allomas-input");
+                if(allomasInput.value == select.value && allomasInput != select){
+                    allomasInput.value = Number(select.oldvalue);
+                    break;
+                }
+            }
+        }
+
+        function mentes(){
+            let csatlakozasSorok = csatlakozasTabla.querySelectorAll(".csatlakozas-sor");
+            let csatlakozasAdatok = [];
+            for(let i=0; i<csatlakozasSorok.length-1; i++){
+                let idotartamInput = csatlakozasSorok[i].querySelector(".idotartam-input");
+                let hosszInput = csatlakozasSorok[i].querySelector(".hossz-input");
+                let allomasInput = csatlakozasSorok[i].querySelector(".allomas-input");
+                let allomas2Input = csatlakozasSorok[i+1].querySelector(".allomas-input");
+                let ujCsatlakozas = {
+                    id: Number(csatlakozasSorok[i].dataset.id),
+                    idotartam: Number(idotartamInput.value),
+                    hossz: Number(hosszInput.value),
+                    elso_id: Number(allomasInput.value),
+                    masodik_id: Number(allomas2Input.value)
+                };
+                csatlakozasAdatok.push(ujCsatlakozas);
+            }
+
+
+            fetch("/utvonal/{{jarat_id}}",
+                {
+                    method: "POST",
+                    body: JSON.stringify(csatlakozasAdatok),
+                    headers: {
+                    "Content-type": "application/json",
+                    },
+                }).then(
+                    response => {
+                        location.href = "/utvonal/{{jarat_id}}";
+                    }
+                );
+        }
+
+    </script>
+</body>
+</html>
