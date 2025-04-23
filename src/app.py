@@ -1,25 +1,45 @@
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import redirect
-from flask import url_for
+from flask import Flask, render_template, request, g, redirect, url_for, session
+from flask_session import Session
+from werkzeug.security import generate_password_hash, check_password_hash
+
+import datetime
 
 import getpass
 import oracledb
 
+def get_db():
+    if 'db' not in g:
+        un = input("Enter database username: ").strip()
+        pw = getpass.getpass("Enter database password for " + un + ": ")
+        g.db = oracledb.connect(
+            user=un,
+            password=pw,
+            host="localhost",
+            port=1521,
+            sid="orania2"
+        )
+        g.cursor = g.db.cursor()
+        print("Successfully connected to Oracle Database")
 
+        # Only on first connection
+        #execute_sql("tabla_letrehozo.sql", g.cursor)
+        #g.db.commit()
+    
+    return g.db, g.cursor
 
-
-un = input("Enter database username: ").strip()
-pw = getpass.getpass("Enter database password for "+un+": ")
-
-
+def close_db(e=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+        print("Connection to database is closed")
 
 app = Flask(__name__, template_folder="views")
+app.teardown_appcontext(close_db)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+app.secret_key = "nagyontitkoskod"  # titkos kulcs a session-höz
+
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 vonat_adatok = [
@@ -59,20 +79,83 @@ jarat_adatok = [
     {"id":3, "indulas":4000, "vonat":2, "utvonal":5},
 ]
 
+felhasznalok = {}
+
+
+@app.route("/")
+def index():
+    if "user" not in session:
+        return redirect(url_for("bejelentkezes"))
+    return render_template("index.html", user=session["user"])
+
+@app.route("/bejelentkezes", methods=["GET", "POST"])
+def bejelentkezes():
+    global felhasznalok
+
+    connection, cursor = get_db()
+
+    felhasznalok = []
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        user = felhasznalok.get(username)
+        if user and check_password_hash(user["password"], password):
+            session["user"] = username
+            return redirect(url_for("index"))
+        else:
+            return "Hibás felhasználónév vagy jelszó!", 401
+
+    return render_template("bejelentkezes.html")
+
+@app.route("/regisztracio", methods=["GET", "POST"])
+def regisztracio():
+    global felhasznalok
+
+    connection, cursor = get_db()
+
+    felhasznalok = []
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username in felhasznalok:
+            return "Ez a felhasználónév már foglalt!", 400
+
+        hashed_pw = generate_password_hash(password)
+        felhasznalok[username] = {"password": hashed_pw, "szul_ido":datetime.datetime(2020, 5, 17), "alkalmazott":0, "administrator":0}
+        session["user"] = username
+
+        cursor.execute("insert into Felhasznalo values (:un, :pw, :szi, :alk, :admin)", [hashed_pw, datetime.datetime(2020, 5, 17), 0, 0])
+        connection.commit()
+
+        return redirect(url_for("index"))
+
+    return render_template("regisztracio.html")
+
+
+@app.route("/kijelentkezes")
+def kijelentkezes():
+    session.pop("user", None)
+    return redirect(url_for("bejelentkezes"))
+
+
 
 @app.route("/vonatok", methods=['POST', 'GET'])
 def vonatok():
     global vonat_adatok
+    global felhasznalok
 
-    connection = oracledb.connect(
-        user=un,
-        password=pw,
-        host="localhost",
-        port="1521",
-        sid="orania2")
-    print("Successfully connected to Oracle Database")
+    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
-    cursor = connection.cursor()
+    connection, cursor = get_db()
 
     vonat_adatok = []
 
@@ -122,10 +205,8 @@ def vonatok():
         for row in cursor.execute("select * from Vonat"):
             vonat_adatok.append({"id":row[0], "elsoosztaly":row[1], "masodosztaly":row[2]})
 
-        connection.close()
         return redirect(url_for("vonatok"))
 
-    connection.close()
     return render_template("vonatok.html", vonat_adatok=vonat_adatok)
 
 
@@ -133,16 +214,12 @@ def vonatok():
 def jaratok():
     global csatlakozas_adatok
     global jarat_adatok
-    
-    connection = oracledb.connect(
-        user=un,
-        password=pw,
-        host="localhost",
-        port="1521",
-        sid="orania2")
-    print("Successfully connected to Oracle Database")
+    global felhasznalok
 
-    cursor = connection.cursor()
+    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    connection, cursor = get_db()
 
     csatlakozas_adatok = []
     for row in cursor.execute("select * from Csatlakozas"):
@@ -157,23 +234,18 @@ def jaratok():
         if csatlakozas["id"] > max_csatlakozas_id:
             max_csatlakozas_id = csatlakozas["id"]
 
-    connection.close()
     return render_template("jaratok.html", jarat_adatok=jarat_adatok, vonat_adatok=vonat_adatok, csatlakozas_adatok=csatlakozas_adatok, max_csatlakozas_id=max_csatlakozas_id)
 
 
 @app.route("/allomasok", methods=['POST', 'GET'])
 def allomasok():
     global allomas_adatok
+    global felhasznalok
 
-    connection = oracledb.connect(
-        user=un,
-        password=pw,
-        host="localhost",
-        port="1521",
-        sid="orania2")
-    print("Successfully connected to Oracle Database")
+    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
-    cursor = connection.cursor()
+    connection, cursor = get_db()
 
     allomas_adatok = []
 
@@ -223,26 +295,20 @@ def allomasok():
         for row in cursor.execute("select * from Allomas"):
             allomas_adatok.append({"id":row[0], "nev":row[1], "varos":row[2]})
 
-        connection.close()
         return redirect(url_for("allomasok"))
 
-    connection.close()
     return render_template("allomasok.html", allomas_adatok=allomas_adatok)
 
 
 @app.route("/jegyek", methods=['POST', 'GET'])
 def jegyek():
     global jegy_adatok
+    global felhasznalok
 
-    connection = oracledb.connect(
-        user=un,
-        password=pw,
-        host="localhost",
-        port="1521",
-        sid="orania2")
-    print("Successfully connected to Oracle Database")
+    if "user" not in session or felhasznalok["user"]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
 
-    cursor = connection.cursor()
+    connection, cursor = get_db()
 
     jegy_adatok = []
 
@@ -293,10 +359,8 @@ def jegyek():
         for row in cursor.execute("select * from Jegy"):
             jegy_adatok.append({"id":row[0], "nev":row[1], "ar":row[2], "felhasznalhato":row[3]})
 
-        connection.close()
         return redirect(url_for("jegyek"))
 
-    connection.close()
     return render_template("jegyek.html", jegy_adatok=jegy_adatok)
 
 
