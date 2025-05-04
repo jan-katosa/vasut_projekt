@@ -543,3 +543,13 @@ def szabadsagok():
 #@app.route("/munkabeosztas", methods=['POST', 'GET'])
 def munkabeosztas():
     pass
+
+
+@app.route("/jarat_kereses", methods=['POST', 'GET'])
+def kereso():
+    connection, cursor = get_db()
+    global vonat_adatok
+    global csatlakozas_adatok
+
+    def keres():
+        pass

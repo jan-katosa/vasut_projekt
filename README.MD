@@ -9,9 +9,9 @@ A feladat egy olyan alkalmazást foglal magába, amelyen keresztül egy vasútt�
 
 1. Töltsd le a repót
 2. Telepítsd a *requirements.txt*-ből a module-okat (pip install -r requirements.txt)
-3. Futtasd le a *tabla_letrehozo.sql* szkriptet
+3. Futtasd le a *tabla_letrehozo.sql* szkriptet az SQL Developer alkalmazásban
 4. Nyiss SSH csatlakozást az orania2 szerverre
-5. Nyisd meg parancssorban a src mappát
+5. Nyisd meg a parancssorban/terminálban a src mappát
 6. Futtasd a *flask run* parancsot
 7. Add meg az Oracle adatbázis adataidat
 8. Előre generált adminisztrátor fiók a teszteléshez
