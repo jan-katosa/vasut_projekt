@@ -127,6 +127,32 @@ ALTER TABLE Vasarlas ADD CONSTRAINT fk_vasarlas_jarat FOREIGN KEY (jarat_azonosi
 ALTER TABLE Szabadsag ADD CONSTRAINT fk_szabadsag_alkalmazott FOREIGN KEY (a_azonosito) REFERENCES Alkalmazott(a_azonosito) ON DELETE CASCADE;
 ALTER TABLE Munkabeosztas ADD CONSTRAINT fk_munkabeosztas_alkalmazott FOREIGN KEY (a_azonosito) REFERENCES Alkalmazott(a_azonosito) ON DELETE CASCADE;
 
+
+
+-- Triggerek
+CREATE OR REPLACE TRIGGER kedvezmeny_trigger
+BEFORE INSERT
+ON Vasarlas
+FOR EACH ROW
+WHEN (NEW.k_azonosito <> NULL)
+DECLARE
+    kNev VARCHAR2(100);
+    fEv NUMBER;
+	fAlk NUMBER;
+BEGIN
+	SELECT nev INTO kNev FROM Kedvezmeny WHERE k_azonosito = :NEW.k_azonosito;
+	SELECT YEAR(SYSDATE - szuletesi_ido) INTO fEv FROM Felhasznalo WHERE felhasznalonev = :NEW.felhasznalonev;
+	SELECT alkalmazott INTO fAlk FROM Felhasznalo WHERE felhasznalonev = :NEW.felhasznalonev;
+	CASE kNev
+        WHEN 'Diák' THEN IF fEv > 18 THEN :NEW.k_azonosito := NULL;
+        WHEN 'Nyugdíjas' THEN IF fEv < 65 THEN :NEW.k_azonosito := NULL;
+		WHEN 'MÁK-ONYF' THEN IF fAlk = 0 THEN :NEW.k_azonosito := NULL;
+    END CASE;
+END;
+
+ALTER TRIGGER kedvezmeny_trigger ENABLE;
+
+
 COMMIT;
 
 INSERT INTO Felhasznalo VALUES ('Kis Béla', 'kisbela1', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 1, 0);
@@ -208,3 +234,4 @@ INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (2, 480,
 INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (3, 480, 960, 4);
 INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (4, 480, 960, 5);
 
+COMMIT;
