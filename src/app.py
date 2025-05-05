@@ -7,14 +7,17 @@ import datetime
 import getpass
 import oracledb
 
-un = input("Enter database username: ").strip()
-pw = getpass.getpass("Enter database password for " + un + ": ")
+#un = input("Enter database username: ").strip()
+#pw = getpass.getpass("Enter database password for " + un + ": ")
+
+un = "C##Q8AUMD"
+pw = "Q8AUMD"
 
 def get_db():
     if 'db' not in g:
         global un
         global pw
-        
+
         g.db = oracledb.connect(
             user=un,
             password=pw,
