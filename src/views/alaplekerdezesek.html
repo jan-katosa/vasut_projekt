@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Alap Lekérdezések</title>
+  <script>
+    async function lekerdezes(endpoint) {
+      const response = await fetch(`/api/${endpoint}`);
+      const data = await response.json();
+      document.getElementById("eredmeny").innerText = JSON.stringify(data, null, 2);
+    }
+  </script>
+</head>
+<body>
+  <h1>Alapadatok lekérdezése</h1>
+  <button onclick="lekerdezes('felhasznalok')">Felhasználók</button>
+  <button onclick="lekerdezes('kedvezmenyek')">Kedvezmények</button>
+  <button onclick="lekerdezes('alkalmazottak')">Alkalmazottak</button>
+  <button onclick="lekerdezes('szabadsagok')">Szabadságok</button>
+  <button onclick="lekerdezes('munkabeosztas')">Munkabeosztás</button>
+  <pre id="eredmeny"></pre>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alkalmazottak</title>
+</head>
+<body>
+    <h1>Alkalmazottak</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Név</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="alkalmazott-adatok">
+        {% for a in alkalmazott_adatok %}
+            <tr class="alkalmazott-sor">
+                <td class="alkalmazott-id" data-id="{{ a.id }}">{{ a.id }}</td>
+                <td class="alkalmazott-nev" data-nev="{{ a.nev }}">{{ a.nev }}</td>
+                <td><button onclick="editAlkalmazott({{ a.id }})">*</button></td>
+                <td><button onclick="deleteAlkalmazott({{ a.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="alkalmazott-nev-input" type="text" placeholder="Alkalmazott neve">
+    <button onclick="ujAlkalmazott()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+<script>
+    var alkalmazottTable = document.getElementById("alkalmazott-adatok");
+    var nevInput = document.getElementById("alkalmazott-nev-input");
+
+    var editingAlkalmazott = -1;
+
+    function editAlkalmazott(id){
+        for (let row of alkalmazottTable.rows) {
+            if (row.querySelector(".alkalmazott-id").dataset.id == id) {
+                nevInput.value = row.querySelector(".alkalmazott-nev").dataset.nev;
+                editingAlkalmazott = id;
+                break;
+            }
+        }
+    }
+
+    function deleteAlkalmazott(id){
+        for (let row of alkalmazottTable.rows) {
+            if (row.querySelector(".alkalmazott-id").dataset.id == id) {
+                row.remove();
+                break;
+            }
+        }
+        editingAlkalmazott = -1;
+    }
+
+    function ujAlkalmazott(){
+        if (editingAlkalmazott == -1) {
+            let ujId = 0;
+            for (let row of alkalmazottTable.rows) {
+                let id = Number(row.querySelector(".alkalmazott-id").dataset.id);
+                if (id > ujId) ujId = id;
+            }
+            ujId++;
+            let ujSor = alkalmazottTable.insertRow();
+            ujSor.innerHTML = `
+                <td class="alkalmazott-id" data-id="${ujId}">-</td>
+                <td class="alkalmazott-nev" data-nev="${nevInput.value}">${nevInput.value}</td>
+                <td><button onclick="editAlkalmazott(${ujId})">*</button></td>
+                <td><button onclick="deleteAlkalmazott(${ujId})">X</button></td>
+            `;
+        } else {
+            for (let row of alkalmazottTable.rows) {
+                if (row.querySelector(".alkalmazott-id").dataset.id == editingAlkalmazott) {
+                    row.querySelector(".alkalmazott-nev").innerText = nevInput.value;
+                    row.querySelector(".alkalmazott-nev").dataset.nev = nevInput.value;
+                }
+            }
+        }
+        editingAlkalmazott = -1;
+    }
+
+    function mentes(){
+        let data = [];
+        for (let row of alkalmazottTable.rows) {
+            data.push({
+                id: Number(row.querySelector(".alkalmazott-id").dataset.id),
+                nev: row.querySelector(".alkalmazott-nev").dataset.nev
+            });
+        }
+
+        fetch("/alkalmazottak", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(response => {
+            location.href = "/alkalmazottak";
+        });
+    }
+</script>
+</body>
+</html>
