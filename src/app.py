@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, g, redirect, url_for, session
 from flask_session import Session
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import jsonify
 import datetime
 
 import getpass
@@ -501,48 +501,523 @@ def jegyek():
     return render_template("jegyek.html", jegy_adatok=jegy_adatok)
 
 
-@app.route("/felhasznalok", methods=['POST', 'GET'])
-def felhasznalok():
+
+
+
+
+
+#Innentől Janié, nem tudom hogy jók, ha az egész program beszar akkor töröld vagy commenteld ki
+
+
+@app.route("/felhasznalok", methods=["POST", "GET"])
+def felhasznalok_kezeles():
     global felhasznalok
 
     connection, cursor = get_db()
-    
 
-    # Checking if administrator is in session
     felhasznalok = {}
-    for row in cursor.execute("select * from Felhasznalo"):
-        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator": row[4]}
 
     if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
         return redirect(url_for("bejelentkezes"))
-    
 
-    # Loading in users from database
-    # (biztos vagyok benne, hogy ezt lehetne a dictbol is megoldani, de nincs agyi erom ra most)
     felhasznalo_adatok = []
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalo_adatok.append({
+            "nev": row[0],
+            "password": row[1],
+            "szul_ido": row[2],
+            "alkalmazott": row[3],
+            "administrator": row[4]
+        })
 
-    for row in cursor.execute("select * from Jegy"):
-        felhasznalo_adatok.append({"nev":row[0], "datum":row[2], "alkalmazott":row[3], "adminisztrator":row[4]})
+    if request.method == "POST":
+        data = request.get_json()
+        deletedInds = []
+        updatedInds = []
+        for i, adat in enumerate(felhasznalo_adatok):
+            found = False
+            for d in data:
+                if d["nev"] == adat["nev"]:
+                    if (d["password"] != adat["password"] or d["szul_ido"] != str(adat["szul_ido"]) or
+                        d["alkalmazott"] != adat["alkalmazott"] or d["administrator"] != adat["administrator"]):
+                        felhasznalo_adatok[i]["password"] = d["password"]
+                        felhasznalo_adatok[i]["szul_ido"] = datetime.datetime.strptime(d["szul_ido"], "%Y-%m-%d")
+                        felhasznalo_adatok[i]["alkalmazott"] = d["alkalmazott"]
+                        felhasznalo_adatok[i]["administrator"] = d["administrator"]
+                        updatedInds.append(i)
+                    found = True
+                    break
+            if not found:
+                deletedInds.append(i)
+
+        newData = []
+        for d in data:
+            found = False
+            for adat in felhasznalo_adatok:
+                if d["nev"] == adat["nev"]:
+                    found = True
+                    break
+            if not found:
+                newData.append({
+                    "nev": d["nev"],
+                    "password": d["password"],
+                    "szul_ido": datetime.datetime.strptime(d["szul_ido"], "%Y-%m-%d"),
+                    "alkalmazott": d["alkalmazott"],
+                    "administrator": d["administrator"]
+                })
+
+        for ind in updatedInds:
+            cursor.execute("""
+                UPDATE Felhasznalo 
+                SET jelszo = :pw, szuletesi_ido = :szul, alkalmazott = :alk, adminisztrator = :adm 
+                WHERE felhasznalonev = :nev
+            """, [felhasznalo_adatok[ind]["password"], felhasznalo_adatok[ind]["szul_ido"], felhasznalo_adatok[ind]["alkalmazott"], felhasznalo_adatok[ind]["administrator"], felhasznalo_adatok[ind]["nev"]])
+
+        for ind in deletedInds:
+            cursor.execute("DELETE FROM Felhasznalo WHERE felhasznalonev = :nev", [felhasznalo_adatok[ind]["nev"]])
+
+        if newData:
+            cursor.executemany("""
+                INSERT INTO Felhasznalo (felhasznalonev, jelszo, szuletesi_ido, alkalmazott, adminisztrator)
+                VALUES (:nev, :password, :szul_ido, :alkalmazott, :administrator)
+            """, newData)
+
+        connection.commit()
+
+        return redirect(url_for("felhasznalok_kezeles"))
+
+    return render_template("felhasznalok.html", felhasznalo_adatok=felhasznalo_adatok)
 
 
-#@app.route("/kedvezmenyek", methods=['POST', 'GET'])
+@app.route("/kedvezmenyek", methods=["POST", "GET"])
 def kedvezmenyek():
-    pass
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator": row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    kedvezmeny_adatok = []
+    for row in cursor.execute("SELECT * FROM Kedvezmeny"):
+        kedvezmeny_adatok.append({"id": row[0], "nev": row[1], "mertek": row[2]})
+
+    if request.method == "POST":
+        data = request.get_json()
+        deletedInds = []
+        updatedInds = []
+        for i, adat in enumerate(kedvezmeny_adatok):
+            found = False
+            for d in data:
+                if d["id"] == adat["id"]:
+                    if d["nev"] != adat["nev"] or d["mertek"] != adat["mertek"]:
+                        kedvezmeny_adatok[i]["nev"] = d["nev"]
+                        kedvezmeny_adatok[i]["mertek"] = d["mertek"]
+                        updatedInds.append(i)
+                    found = True
+                    break
+            if not found:
+                deletedInds.append(i)
+
+        newData = []
+        for d in data:
+            found = False
+            for adat in kedvezmeny_adatok:
+                if d["id"] == adat["id"]:
+                    found = True
+                    break
+            if not found:
+                newData.append({"nev": d["nev"], "mertek": d["mertek"]})
+
+        for ind in updatedInds:
+            cursor.execute("""
+                UPDATE Kedvezmeny SET nev = :nev, mertek = :mertek WHERE kedvezmeny_azonosito = :id
+            """, [kedvezmeny_adatok[ind]["nev"], kedvezmeny_adatok[ind]["mertek"], kedvezmeny_adatok[ind]["id"]])
+
+        for ind in deletedInds:
+            cursor.execute("DELETE FROM Kedvezmeny WHERE kedvezmeny_azonosito = :id", [kedvezmeny_adatok[ind]["id"]])
+
+        if newData:
+            cursor.executemany("""
+                INSERT INTO Kedvezmeny (nev, mertek) VALUES (:nev, :mertek)
+            """, newData)
+
+        connection.commit()
+
+        return redirect(url_for("kedvezmenyek"))
+
+    return render_template("kedvezmenyek.html", kedvezmeny_adatok=kedvezmeny_adatok)
 
 
-#@app.route("/alkalmazottak", methods=['POST', 'GET'])
+@app.route("/alkalmazottak", methods=["POST", "GET"])
 def alkalmazottak():
-    pass
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator": row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    alkalmazott_adatok = []
+    for row in cursor.execute("SELECT * FROM Alkalmazott"):
+        alkalmazott_adatok.append({"id": row[0], "nev": row[1]})
+
+    if request.method == "POST":
+        data = request.get_json()
+        deletedInds = []
+        updatedInds = []
+        for i, adat in enumerate(alkalmazott_adatok):
+            found = False
+            for d in data:
+                if d["id"] == adat["id"]:
+                    if d["nev"] != adat["nev"]:
+                        alkalmazott_adatok[i]["nev"] = d["nev"]
+                        updatedInds.append(i)
+                    found = True
+                    break
+            if not found:
+                deletedInds.append(i)
+
+        newData = []
+        for d in data:
+            found = False
+            for adat in alkalmazott_adatok:
+                if d["id"] == adat["id"]:
+                    found = True
+                    break
+            if not found:
+                newData.append({"nev": d["nev"]})
+
+        for ind in updatedInds:
+            cursor.execute("UPDATE Alkalmazott SET nev = :nev WHERE alkalmazott_azonosito = :id", [alkalmazott_adatok[ind]["nev"], alkalmazott_adatok[ind]["id"]])
+
+        for ind in deletedInds:
+            cursor.execute("DELETE FROM Alkalmazott WHERE alkalmazott_azonosito = :id", [alkalmazott_adatok[ind]["id"]])
+
+        if newData:
+            cursor.executemany("INSERT INTO Alkalmazott (nev) VALUES (:nev)", newData)
+
+        connection.commit()
+
+        return redirect(url_for("alkalmazottak"))
+
+    return render_template("alkalmazottak.html", alkalmazott_adatok=alkalmazott_adatok)
 
 
-#@app.route("/szabadsagok", methods=['POST', 'GET'])
+import oracledb  # cx_Oracle helyett
+
+@app.route("/szabadsagok", methods=["POST", "GET"])
 def szabadsagok():
-    pass
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalok[row[0]] = {
+            "password": row[1],
+            "szul_ido": row[2],
+            "alkalmazott": row[3],
+            "administrator": row[4]
+        }
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    szabadsag_adatok = []
+    for row in cursor.execute("SELECT * FROM Szabadsag"):
+        szabadsag_adatok.append({
+            "id": row[0],
+            "datum_tol": row[1],
+            "datum_ig": row[2],
+            "alkalmazott_id": row[3]
+        })
+
+    if request.method == "POST":
+        data = request.get_json()
+        deletedInds = []
+        updatedInds = []
+
+        for i, adat in enumerate(szabadsag_adatok):
+            found = False
+            for d in data:
+                if d["id"] == adat["id"]:
+                    if (d["alkalmazott_id"] != adat["alkalmazott_id"] or
+                        d["datum_tol"] != str(adat["datum_tol"]) or
+                        d["datum_ig"] != str(adat["datum_ig"])):
+                        szabadsag_adatok[i]["alkalmazott_id"] = d["alkalmazott_id"]
+                        szabadsag_adatok[i]["datum_tol"] = datetime.datetime.strptime(d["datum_tol"], "%Y-%m-%d")
+                        szabadsag_adatok[i]["datum_ig"] = datetime.datetime.strptime(d["datum_ig"], "%Y-%m-%d")
+                        updatedInds.append(i)
+                    found = True
+                    break
+            if not found:
+                deletedInds.append(i)
+
+        newData = []
+        for d in data:
+            found = False
+            for adat in szabadsag_adatok:
+                if d["id"] == adat["id"]:
+                    found = True
+                    break
+            if not found:
+                newData.append({
+                    "alkalmazott_id": d["alkalmazott_id"],
+                    "datum_tol": datetime.datetime.strptime(d["datum_tol"], "%Y-%m-%d"),
+                    "datum_ig": datetime.datetime.strptime(d["datum_ig"], "%Y-%m-%d")
+                })
+
+        # MÓDOSÍTÁS
+        for ind in updatedInds:
+            cursor.execute("""
+                UPDATE Szabadsag 
+                SET mettol = :dtol, meddig = :dig, a_azonosito = :alk
+                WHERE sz_azonosito = :id
+            """, [
+                szabadsag_adatok[ind]["datum_tol"],
+                szabadsag_adatok[ind]["datum_ig"],
+                szabadsag_adatok[ind]["alkalmazott_id"],
+                szabadsag_adatok[ind]["id"]
+            ])
+
+        # TÖRLÉS
+        for ind in deletedInds:
+            cursor.execute("DELETE FROM Szabadsag WHERE sz_azonosito = :id", [szabadsag_adatok[ind]["id"]])
+
+        # HOZZÁADÁS (tárolt eljárással)
+        for d in newData:
+            try:
+                cursor.callproc("Uj_Szabadsag_Rogzitese", [
+                    d["alkalmazott_id"],
+                    d["datum_tol"],
+                    d["datum_ig"]
+                ])
+            except oracledb.DatabaseError as e:  # cx_Oracle helyett oracledb
+                error_obj, = e.args
+                connection.rollback()
+                return jsonify({"status": "hiba", "uzenet": error_obj.message}), 400
+
+        connection.commit()
+        return redirect(url_for("szabadsagok"))
+
+    return render_template("szabadsagok.html", szabadsag_adatok=szabadsag_adatok)
 
 
-#@app.route("/munkabeosztas", methods=['POST', 'GET'])
+@app.route("/munkabeosztas", methods=["POST", "GET"])
 def munkabeosztas():
-    pass
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("SELECT * FROM Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator": row[4]}
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    munkabeosztas_adatok = []
+    for row in cursor.execute("SELECT * FROM Munkabeosztas"):
+        munkabeosztas_adatok.append({"id": row[0], "alkalmazott_id": row[1], "datum": row[2], "muszak": row[3]})
+
+    if request.method == "POST":
+        data = request.get_json()
+        deletedInds = []
+        updatedInds = []
+        for i, adat in enumerate(munkabeosztas_adatok):
+            found = False
+            for d in data:
+                if d["id"] == adat["id"]:
+                    if (d["alkalmazott_id"] != adat["alkalmazott_id"] or
+                        d["datum"] != str(adat["datum"]) or
+                        d["muszak"] != adat["muszak"]):
+                        munkabeosztas_adatok[i]["alkalmazott_id"] = d["alkalmazott_id"]
+                        munkabeosztas_adatok[i]["datum"] = datetime.datetime.strptime(d["datum"], "%Y-%m-%d")
+                        munkabeosztas_adatok[i]["muszak"] = d["muszak"]
+                        updatedInds.append(i)
+                    found = True
+                    break
+            if not found:
+                deletedInds.append(i)
+
+        newData = []
+        for d in data:
+            found = False
+            for adat in munkabeosztas_adatok:
+                if d["id"] == adat["id"]:
+                    found = True
+                    break
+            if not found:
+                newData.append({
+                    "alkalmazott_id": d["alkalmazott_id"],
+                    "datum": datetime.datetime.strptime(d["datum"], "%Y-%m-%d"),
+                    "muszak": d["muszak"]
+                })
+
+        for ind in updatedInds:
+            cursor.execute("""
+                UPDATE Munkabeosztas 
+                SET alkalmazott_azonosito = :alk, datum = :datum, muszak = :muszak
+                WHERE munkabeosztas_azonosito = :id
+            """, [munkabeosztas_adatok[ind]["alkalmazott_id"], munkabeosztas_adatok[ind]["datum"], munkabeosztas_adatok[ind]["muszak"], munkabeosztas_adatok[ind]["id"]])
+
+        for ind in deletedInds:
+            cursor.execute("DELETE FROM Munkabeosztas WHERE munkabeosztas_azonosito = :id", [munkabeosztas_adatok[ind]["id"]])
+
+        if newData:
+            cursor.executemany("""
+                INSERT INTO Munkabeosztas (alkalmazott_azonosito, datum, muszak) 
+                VALUES (:alkalmazott_id, :datum, :muszak)
+            """, newData)
+
+        connection.commit()
+
+        return redirect(url_for("munkabeosztas"))
+
+    return render_template("munkabeosztas.html", munkabeosztas_adatok=munkabeosztas_adatok)
+
+
+@app.route("/alaplekerdezesek", methods=['POST', 'GET'])
+def alaplekerdezesek():
+    global felhasznalok
+    global alapadatok
+
+    connection, cursor = get_db()
+
+    # Felhasználók betöltése
+    felhasznalok = {}
+    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+        felhasznalok[row[0]] = {
+            "password": row[1],
+            "szul_ido": row[2],
+            "alkalmazott": row[3],
+            "administrator": row[4]
+        }
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+    # Alapadatok lekérdezése
+    alapadatok = {
+        "felhasznalok": [],
+        "kedvezmenyek": [],
+        "alkalmazottak": [],
+        "szabadsagok": [],
+        "munkabeosztas": []
+    }
+
+    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+        alapadatok["felhasznalok"].append({
+            "azonosito": row[0], "jelszo": row[1], "szul_ido": row[2],
+            "alkalmazott": row[3], "administrator": row[4]
+        })
+
+    for row in cursor.execute("SELECT kedvezmeny_id, leiras, osszeg FROM Kedvezmeny"):
+        alapadatok["kedvezmenyek"].append({
+            "id": row[0], "leiras": row[1], "osszeg": row[2]
+        })
+
+    for row in cursor.execute("SELECT a_azonosito, nev, beosztas FROM Alkalmazott"):
+        alapadatok["alkalmazottak"].append({
+            "id": row[0], "nev": row[1], "beosztas": row[2]
+        })
+
+    for row in cursor.execute("SELECT szabadsag_id, alkalmazott_id, datum FROM Szabadsag"):
+        alapadatok["szabadsagok"].append({
+            "id": row[0], "alkalmazott_id": row[1], "datum": row[2]
+        })
+
+    for row in cursor.execute("SELECT beosztas_id, alkalmazott_id, nap, muszak FROM Munkabeosztas"):
+        alapadatok["munkabeosztas"].append({
+            "id": row[0], "alkalmazott_id": row[1], "nap": row[2], "muszak": row[3]
+        })
+
+    return render_template("alaplekerdezesek.html", alapadatok=alapadatok)
+
+
+
+
+
+
+
+
+
+@app.route("/api/felhasznalok")
+def api_felhasznalok():
+    connection, cursor = get_db()
+    eredmeny = []
+    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+        eredmeny.append({
+            "azonosito": row[0],
+            "jelszo": row[1],
+            "szul_ido": row[2],
+            "alkalmazott": row[3],
+            "administrator": row[4]
+        })
+    return jsonify(eredmeny)
+
+
+@app.route("/api/kedvezmenyek")
+def api_kedvezmenyek():
+    connection, cursor = get_db()
+    eredmeny = []
+    for row in cursor.execute("SELECT k_azonosito, nev, kedvezmeny_szazalek FROM Kedvezmeny"):
+        eredmeny.append({
+            "id": row[0],
+            "nev": row[1],
+            "szazalek": row[2]
+        })
+    return jsonify(eredmeny)
+
+
+@app.route("/api/alkalmazottak")
+def api_alkalmazottak():
+    connection, cursor = get_db()
+    eredmeny = []
+    for row in cursor.execute("SELECT a_azonosito, nev, beosztas FROM Alkalmazott"):
+        eredmeny.append({
+            "id": row[0],
+            "nev": row[1],
+            "beosztas": row[2]
+        })
+    return jsonify(eredmeny)
+
+
+@app.route("/api/szabadsagok")
+def api_szabadsagok():
+    connection, cursor = get_db()
+    eredmeny = []
+    for row in cursor.execute("SELECT sz_azonosito, a_azonosito, mettol, meddig FROM Szabadsag"):
+        eredmeny.append({
+            "id": row[0],
+            "alkalmazott_id": row[1],
+            "mettol": row[2],
+            "meddig": row[3]
+        })
+    return jsonify(eredmeny)
+
+
+@app.route("/api/munkabeosztas")
+def api_munkabeosztas():
+    connection, cursor = get_db()
+    eredmeny = []
+    for row in cursor.execute("SELECT mb_azonosito, a_azonosito, nap, muszak FROM Munkabeosztas"):
+        eredmeny.append({
+            "id": row[0],
+            "alkalmazott_id": row[1],
+            "nap": row[2],
+            "muszak": row[3]
+        })
+    return jsonify(eredmeny)
+
+
+
+# 509. sorba írtam, hogy onnan kezdődik és idáig tart Jani feladata,
+# ha rossz, töröld vagy commenteld vagy javítsd ki
+
 
 
 @app.route("/jarat_kereses", methods=['POST', 'GET'])
