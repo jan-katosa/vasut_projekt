@@ -134,22 +134,25 @@ CREATE OR REPLACE TRIGGER kedvezmeny_trigger
 BEFORE INSERT
 ON Vasarlas
 FOR EACH ROW
-WHEN (NEW.k_azonosito <> NULL)
 DECLARE
     kNev VARCHAR2(100);
     fEv NUMBER;
 	fAlk NUMBER;
 BEGIN
 	SELECT nev INTO kNev FROM Kedvezmeny WHERE k_azonosito = :NEW.k_azonosito;
-	SELECT YEAR(SYSDATE - szuletesi_ido) INTO fEv FROM Felhasznalo WHERE felhasznalonev = :NEW.felhasznalonev;
+	SELECT floor(months_between(SYSDATE, CAST(szuletesi_ido AS DATE)) /12) INTO fEv FROM Felhasznalo WHERE felhasznalonev = :NEW.felhasznalonev;
 	SELECT alkalmazott INTO fAlk FROM Felhasznalo WHERE felhasznalonev = :NEW.felhasznalonev;
-	CASE kNev
-        WHEN 'Diák' THEN IF fEv > 18 THEN :NEW.k_azonosito := NULL;
-        WHEN 'Nyugdíjas' THEN IF fEv < 65 THEN :NEW.k_azonosito := NULL;
-		WHEN 'MÁK-ONYF' THEN IF fAlk = 0 THEN :NEW.k_azonosito := NULL;
-    END CASE;
-END;
+	
+    IF kNev = 'Diák' AND fEv > 18 THEN 
+        :NEW.k_azonosito := NULL;
+    ELSIF kNev = 'Nyugdíjas' AND fEv < 65 THEN
+        :NEW.k_azonosito := NULL;
+    ELSIF kNev = 'MÁK-ONYF' AND fAlk = 0 THEN 
+        :NEW.k_azonosito := NULL;
+    END IF;
 
+END;
+/
 
 
 -- Munkabeosztás trigger, Jani
