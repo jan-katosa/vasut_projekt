@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szabadságok</title>
+</head>
+<body>
+    <h1>Szabadságok</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alkalmazott ID</th>
+                <th>Dátum -tól</th>
+                <th>Dátum -ig</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="szabadsag-adatok">
+        {% for s in szabadsag_adatok %}
+            <tr class="szabadsag-sor">
+                <td class="szabadsag-id" data-id="{{ s.id }}">{{ s.id }}</td>
+                <td class="szabadsag-alkalmazottid" data-alkalmazottid="{{ s.alkalmazott_id }}">{{ s.alkalmazott_id }}</td>
+                <td class="szabadsag-datumtol" data-datumtol="{{ s.datum_tol.strftime('%Y-%m-%d') }}">{{ s.datum_tol.strftime('%Y-%m-%d') }}</td>
+                <td class="szabadsag-datumig" data-datumig="{{ s.datum_ig.strftime('%Y-%m-%d') }}">{{ s.datum_ig.strftime('%Y-%m-%d') }}</td>
+                <td><button onclick="editSzabadsag({{ s.id }})">*</button></td>
+                <td><button onclick="deleteSzabadsag({{ s.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="szabadsag-alkalmazottid-input" type="number" placeholder="Alkalmazott ID">
+    <input id="szabadsag-datumtol-input" type="date">
+    <input id="szabadsag-datumig-input" type="date">
+    <button onclick="ujSzabadsag()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+<script>
+    var szabadsagTable = document.getElementById("szabadsag-adatok");
+    var alkalmazottIdInput = document.getElementById("szabadsag-alkalmazottid-input");
+    var datumTolInput = document.getElementById("szabadsag-datumtol-input");
+    var datumIgInput = document.getElementById("szabadsag-datumig-input");
+
+    var editingSzabadsag = -1;
+
+    function editSzabadsag(id){
+        for (let row of szabadsagTable.rows) {
+            if (row.querySelector(".szabadsag-id").dataset.id == id) {
+                alkalmazottIdInput.value = row.querySelector(".szabadsag-alkalmazottid").dataset.alkalmazottid;
+                datumTolInput.value = row.querySelector(".szabadsag-datumtol").dataset.datumtol;
+                datumIgInput.value = row.querySelector(".szabadsag-datumig").dataset.datumig;
+                editingSzabadsag = id;
+                break;
+            }
+        }
+    }
+
+    function deleteSzabadsag(id){
+        for (let row of szabadsagTable.rows) {
+            if (row.querySelector(".szabadsag-id").dataset.id == id) {
+                row.remove();
+                break;
+            }
+        }
+        editingSzabadsag = -1;
+    }
+
+    function ujSzabadsag(){
+        if (editingSzabadsag == -1) {
+            let ujId = 0;
+            for (let row of szabadsagTable.rows) {
+                let id = Number(row.querySelector(".szabadsag-id").dataset.id);
+                if (id > ujId) ujId = id;
+            }
+            ujId++;
+            let ujSor = szabadsagTable.insertRow();
+            ujSor.innerHTML = `
+                <td class="szabadsag-id" data-id="${ujId}">-</td>
+                <td class="szabadsag-alkalmazottid" data-alkalmazottid="${alkalmazottIdInput.value}">${alkalmazottIdInput.value}</td>
+                <td class="szabadsag-datumtol" data-datumtol="${datumTolInput.value}">${datumTolInput.value}</td>
+                <td class="szabadsag-datumig" data-datumig="${datumIgInput.value}">${datumIgInput.value}</td>
+                <td><button onclick="editSzabadsag(${ujId})">*</button></td>
+                <td><button onclick="deleteSzabadsag(${ujId})">X</button></td>
+            `;
+        } else {
+            for (let row of szabadsagTable.rows) {
+                if (row.querySelector(".szabadsag-id").dataset.id == editingSzabadsag) {
+                    row.querySelector(".szabadsag-alkalmazottid").innerText = alkalmazottIdInput.value;
+                    row.querySelector(".szabadsag-alkalmazottid").dataset.alkalmazottid = alkalmazottIdInput.value;
+                    row.querySelector(".szabadsag-datumtol").innerText = datumTolInput.value;
+                    row.querySelector(".szabadsag-datumtol").dataset.datumtol = datumTolInput.value;
+                    row.querySelector(".szabadsag-datumig").innerText = datumIgInput.value;
+                    row.querySelector(".szabadsag-datumig").dataset.datumig = datumIgInput.value;
+                }
+            }
+        }
+        editingSzabadsag = -1;
+    }
+
+    function mentes(){
+        let data = [];
+        for (let row of szabadsagTable.rows) {
+            data.push({
+                id: Number(row.querySelector(".szabadsag-id").dataset.id),
+                alkalmazott_id: Number(row.querySelector(".szabadsag-alkalmazottid").dataset.alkalmazottid),
+                datum_tol: row.querySelector(".szabadsag-datumtol").dataset.datumtol,
+                datum_ig: row.querySelector(".szabadsag-datumig").dataset.datumig
+            });
+        }
+
+        fetch("/szabadsagok", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(response => {
+            location.href = "/szabadsagok";
+        });
+    }
+</script>
+</body>
+</html>

@@ -3,73 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/style/style.scss">
-    <link rel="stylesheet" href="/src/style/users.scss">
     <title>Felhasználók</title>
 </head>
 <body>
-    <div class="main-container">
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Név</th>
-                        <th>Születési Dátum</th>
-                        <th>Alkalmazott</th>
-                        <th>Adminsztrátor</th>
-                        <th>Szerkesztés</th>
-                        <th>Törlés</th>
-                    </tr>
-                </thead>
-                <tbody id="felhasznalo-adatok">
-                {% for felhasznalo in felhasznalo_adatok %}
-                    <tr>
-                        <td class="felhasznalo-nev" data-nev="{{ felhasznalo.nev }}">{{ felhasznalo.nev }}</td>
-                        <td class="felhasznalo-datum" data-datum="{{ felhasznalo.datum }}">{{ felhasznalo.datum }}</td>
-                        <td class="felhasznalo-alkalmazott" data-alkalmazott="{{ felhasznalo.alkalmazott }}">{{ felhasznalo.alkalmazott }}</td>
-                        <td class="felhasznalo-adminisztrator" data-adminisztrator="{{ felhasznalo.adminsztrator }}">{{ felhasznalo.adminisztrator }}</td>
-                        <td><button onclick="editFelhasznalo({{ felhasznalo.nev }})">*</button></td>
-                        <td><button onclick="deleteFelhasznalo({{ felhasznalo.nev }})">X</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <input id="alkalmazott-input" type="checkbox" value="Alkalmazott">
-            <input id="adminisztrator-input" type="checkbox" value="Adminsztrátor">
-        </div>
-    </div>
+    <h1>Felhasználók</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Felhasználónév</th>
+                <th>Jelszó</th>
+                <th>Szül. idő</th>
+                <th>Alkalmazott</th>
+                <th>Adminisztrátor</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="felhasznalo-adatok">
+        {% for f in felhasznalo_adatok %}
+            <tr class="felhasznalo-sor">
+                <td class="felhasznalo-nev" data-nev="{{ f.nev }}">{{ f.nev }}</td>
+                <td class="felhasznalo-jelszo" data-jelszo="{{ f.password }}">{{ f.password }}</td>
+                <td class="felhasznalo-szulido" data-szulido="{{ f.szul_ido.strftime('%Y-%m-%d') }}">{{ f.szul_ido.strftime('%Y-%m-%d') }}</td>
+                <td class="felhasznalo-alkalmazott" data-alkalmazott="{{ f.alkalmazott }}">{{ f.alkalmazott }}</td>
+                <td class="felhasznalo-admin" data-admin="{{ f.administrator }}">{{ f.administrator }}</td>
+                <td><button onclick="editFelhasznalo('{{ f.nev }}')">*</button></td>
+                <td><button onclick="deleteFelhasznalo('{{ f.nev }}')">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="felhasznalo-nev-input" type="text" placeholder="Felhasználónév">
+    <input id="felhasznalo-jelszo-input" type="text" placeholder="Jelszó">
+    <input id="felhasznalo-szulido-input" type="date">
+    <input id="felhasznalo-alkalmazott-input" type="number" placeholder="Alkalmazott (0/1)">
+    <input id="felhasznalo-admin-input" type="number" placeholder="Admin (0/1)">
+    <button onclick="ujFelhasznalo()">+</button><br>
 
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
 
-    <!--- Scripts --->
-    <script>
-        var felhasznaloTable = document.getElementById("felhasznalo-adatok");
-        var alkalmazottInput = document.getElementById("alkalmazott-input");
-        var adminisztratorInput = document.getElementById("adminisztrator-input");
+<script>
+    var felhasznaloTable = document.getElementById("felhasznalo-adatok");
+    var nevInput = document.getElementById("felhasznalo-nev-input");
+    var jelszoInput = document.getElementById("felhasznalo-jelszo-input");
+    var szulidoInput = document.getElementById("felhasznalo-szulido-input");
+    var alkalmazottInput = document.getElementById("felhasznalo-alkalmazott-input");
+    var adminInput = document.getElementById("felhasznalo-admin-input");
 
-        var editingFelhasznalo = -1;
+    var editingFelhasznalo = "";
 
-        function editFelhasznalo(id) {
-            for(let i = 0; i < felhasznaloTable.childNodes.length; i++) {
-                if(felhasznaloTable.childNodes[i].classList !== undefined) {
-                    let nevField = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-nev");
-                    let alkalmazottCheck = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-alkalmazott");
-                    let adminisztratorCheck = felhasznaloTable.childNodes[i].querySelector(".felhasznalo-adminisztrator");
-                    
-                    if(nevField.dataset.nev == nev) {
-                        alkalmazottInput.value = nevField.dataset.alkalmazott;
-                        adminisztratorInput = nevField.dataset.adminisztrator;
+    function editFelhasznalo(nev){
+        for (let row of felhasznaloTable.rows) {
+            if (row.querySelector(".felhasznalo-nev").dataset.nev == nev) {
+                nevInput.value = row.querySelector(".felhasznalo-nev").dataset.nev;
+                jelszoInput.value = row.querySelector(".felhasznalo-jelszo").dataset.jelszo;
+                szulidoInput.value = row.querySelector(".felhasznalo-szulido").dataset.szulido;
+                alkalmazottInput.value = row.querySelector(".felhasznalo-alkalmazott").dataset.alkalmazott;
+                adminInput.value = row.querySelector(".felhasznalo-admin").dataset.admin;
+                editingFelhasznalo = nev;
+                break;
+            }
+        }
+    }
 
-                        break;
-                    }
+    function deleteFelhasznalo(nev){
+        for (let row of felhasznaloTable.rows) {
+            if (row.querySelector(".felhasznalo-nev").dataset.nev == nev) {
+                row.remove();
+                break;
+            }
+        }
+        editingFelhasznalo = "";
+    }
+
+    function ujFelhasznalo(){
+        if (editingFelhasznalo == "") {
+            let ujSor = felhasznaloTable.insertRow();
+            ujSor.innerHTML = `
+                <td class="felhasznalo-nev" data-nev="${nevInput.value}">${nevInput.value}</td>
+                <td class="felhasznalo-jelszo" data-jelszo="${jelszoInput.value}">${jelszoInput.value}</td>
+                <td class="felhasznalo-szulido" data-szulido="${szulidoInput.value}">${szulidoInput.value}</td>
+                <td class="felhasznalo-alkalmazott" data-alkalmazott="${alkalmazottInput.value}">${alkalmazottInput.value}</td>
+                <td class="felhasznalo-admin" data-admin="${adminInput.value}">${adminInput.value}</td>
+                <td><button onclick="editFelhasznalo('${nevInput.value}')">*</button></td>
+                <td><button onclick="deleteFelhasznalo('${nevInput.value}')">X</button></td>
+            `;
+        } else {
+            for (let row of felhasznaloTable.rows) {
+                if (row.querySelector(".felhasznalo-nev").dataset.nev == editingFelhasznalo) {
+                    row.querySelector(".felhasznalo-jelszo").innerText = jelszoInput.value;
+                    row.querySelector(".felhasznalo-jelszo").dataset.jelszo = jelszoInput.value;
+                    row.querySelector(".felhasznalo-szulido").innerText = szulidoInput.value;
+                    row.querySelector(".felhasznalo-szulido").dataset.szulido = szulidoInput.value;
+                    row.querySelector(".felhasznalo-alkalmazott").innerText = alkalmazottInput.value;
+                    row.querySelector(".felhasznalo-alkalmazott").dataset.alkalmazott = alkalmazottInput.value;
+                    row.querySelector(".felhasznalo-admin").innerText = adminInput.value;
+                    row.querySelector(".felhasznalo-admin").dataset.admin = adminInput.value;
                 }
             }
-            editingFelhasznalo = id;
+        }
+        editingFelhasznalo = "";
+    }
+
+    function mentes(){
+        let data = [];
+        for (let row of felhasznaloTable.rows) {
+            data.push({
+                nev: row.querySelector(".felhasznalo-nev").dataset.nev,
+                password: row.querySelector(".felhasznalo-jelszo").dataset.jelszo,
+                szul_ido: row.querySelector(".felhasznalo-szulido").dataset.szulido,
+                alkalmazott: Number(row.querySelector(".felhasznalo-alkalmazott").dataset.alkalmazott),
+                administrator: Number(row.querySelector(".felhasznalo-admin").dataset.admin)
+            });
         }
 
-        function deleteFelhasznalo(id) {}
-
-        function ujFelhasznalo(id) {}
-    </script>
+        fetch("/felhasznalok", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(response => {
+            location.href = "/felhasznalok";
+        });
+    }
+</script>
 </body>
 </html>

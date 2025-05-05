@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munkabeosztás</title>
+</head>
+<body>
+    <h1>Munkabeosztás</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alkalmazott ID</th>
+                <th>Dátum</th>
+                <th>Műszak</th>
+                <th>Szerkesztés</th>
+                <th>Törlés</th>
+            </tr>
+        </thead>
+        <tbody id="munkabeosztas-adatok">
+        {% for m in munkabeosztas_adatok %}
+            <tr class="munkabeosztas-sor">
+                <td class="munkabeosztas-id" data-id="{{ m.id }}">{{ m.id }}</td>
+                <td class="munkabeosztas-alkalmazottid" data-alkalmazottid="{{ m.alkalmazott_id }}">{{ m.alkalmazott_id }}</td>
+                <td class="munkabeosztas-datum" data-datum="{{ m.datum.strftime('%Y-%m-%d') }}">{{ m.datum.strftime('%Y-%m-%d') }}</td>
+                <td class="munkabeosztas-muszak" data-muszak="{{ m.muszak }}">{{ m.muszak }}</td>
+                <td><button onclick="editMunkabeosztas({{ m.id }})">*</button></td>
+                <td><button onclick="deleteMunkabeosztas({{ m.id }})">X</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="munkabeosztas-alkalmazottid-input" type="number" placeholder="Alkalmazott ID">
+    <input id="munkabeosztas-datum-input" type="date">
+    <input id="munkabeosztas-muszak-input" type="text" placeholder="Műszak">
+    <button onclick="ujMunkabeosztas()">+</button><br>
+
+    <button onclick="mentes()">Mentés</button>
+    <a href="/">
+        <button>Mégse</button>
+    </a>
+
+<script>
+    var munkabeosztasTable = document.getElementById("munkabeosztas-adatok");
+    var alkalmazottIdInput = document.getElementById("munkabeosztas-alkalmazottid-input");
+    var datumInput = document.getElementById("munkabeosztas-datum-input");
+    var muszakInput = document.getElementById("munkabeosztas-muszak-input");
+
+    var editingMunkabeosztas = -1;
+
+    function editMunkabeosztas(id){
+        for (let row of munkabeosztasTable.rows) {
+            if (row.querySelector(".munkabeosztas-id").dataset.id == id) {
+                alkalmazottIdInput.value = row.querySelector(".munkabeosztas-alkalmazottid").dataset.alkalmazottid;
+                datumInput.value = row.querySelector(".munkabeosztas-datum").dataset.datum;
+                muszakInput.value = row.querySelector(".munkabeosztas-muszak").dataset.muszak;
+                editingMunkabeosztas = id;
+                break;
+            }
+        }
+    }
+
+    function deleteMunkabeosztas(id){
+        for (let row of munkabeosztasTable.rows) {
+            if (row.querySelector(".munkabeosztas-id").dataset.id == id) {
+                row.remove();
+                break;
+            }
+        }
+        editingMunkabeosztas = -1;
+    }
+
+    function ujMunkabeosztas(){
+        if (editingMunkabeosztas == -1) {
+            let ujId = 0;
+            for (let row of munkabeosztasTable.rows) {
+                let id = Number(row.querySelector(".munkabeosztas-id").dataset.id);
+                if (id > ujId) ujId = id;
+            }
+            ujId++;
+            let ujSor = munkabeosztasTable.insertRow();
+            ujSor.innerHTML = `
+                <td class="munkabeosztas-id" data-id="${ujId}">-</td>
+                <td class="munkabeosztas-alkalmazottid" data-alkalmazottid="${alkalmazottIdInput.value}">${alkalmazottIdInput.value}</td>
+                <td class="munkabeosztas-datum" data-datum="${datumInput.value}">${datumInput.value}</td>
+                <td class="munkabeosztas-muszak" data-muszak="${muszakInput.value}">${muszakInput.value}</td>
+                <td><button onclick="editMunkabeosztas(${ujId})">*</button></td>
+                <td><button onclick="deleteMunkabeosztas(${ujId})">X</button></td>
+            `;
+        } else {
+            for (let row of munkabeosztasTable.rows) {
+                if (row.querySelector(".munkabeosztas-id").dataset.id == editingMunkabeosztas) {
+                    row.querySelector(".munkabeosztas-alkalmazottid").innerText = alkalmazottIdInput.value;
+                    row.querySelector(".munkabeosztas-alkalmazottid").dataset.alkalmazottid = alkalmazottIdInput.value;
+                    row.querySelector(".munkabeosztas-datum").innerText = datumInput.value;
+                    row.querySelector(".munkabeosztas-datum").dataset.datum = datumInput.value;
+                    row.querySelector(".munkabeosztas-muszak").innerText = muszakInput.value;
+                    row.querySelector(".munkabeosztas-muszak").dataset.muszak = muszakInput.value;
+                }
+            }
+        }
+        editingMunkabeosztas = -1;
+    }
+
+    function mentes(){
+        let data = [];
+        for (let row of munkabeosztasTable.rows) {
+            data.push({
+                id: Number(row.querySelector(".munkabeosztas-id").dataset.id),
+                alkalmazott_id: Number(row.querySelector(".munkabeosztas-alkalmazottid").dataset.alkalmazottid),
+                datum: row.querySelector(".munkabeosztas-datum").dataset.datum,
+                muszak: row.querySelector(".munkabeosztas-muszak").dataset.muszak
+            });
+        }
+
+        fetch("/munkabeosztas", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(response => {
+            location.href = "/munkabeosztas";
+        });
+    }
+</script>
+</body>
+</html>
