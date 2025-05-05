@@ -7,6 +7,7 @@ import datetime
 import getpass
 import oracledb
 
+
 un = input("Enter database username: ").strip()
 pw = getpass.getpass("Enter database password for " + un + ": ")
 
@@ -1019,12 +1020,56 @@ def api_munkabeosztas():
 # ha rossz, töröld vagy commenteld vagy javítsd ki
 
 
+@app.route("/osszetett_lekerdezesek", methods=['POST', 'GET'])
+def osszetett_lekerdezesek():
+    global felhasznalok
+    global alapadatok
 
-@app.route("/jarat_kereses", methods=['POST', 'GET'])
-def kereso():
     connection, cursor = get_db()
-    global vonat_adatok
-    global csatlakozas_adatok
 
-    def keres():
-        pass
+    felhasznalok = {}
+    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+        felhasznalok[row[0]] = {
+            "password": row[1],
+            "szul_ido": row[2],
+            "alkalmazott": row[3],
+            "administrator": row[4]
+        }
+
+    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+        return redirect(url_for("bejelentkezes"))
+
+
+@app.route("/api/osszetett/vonatkereso")
+def api_vonatkereso():
+    pass
+
+
+@app.route("/api/osszetett/jegyvasarlas")
+def api_jegyvasarlas():
+    pass
+
+
+@app.route("/api/osszetett/eveskimutatas")
+def api_eveskimutatas():
+    pass
+
+
+@app.route("/api/osszetett/arustat")
+def api_arustat():
+    pass
+
+
+@app.route("/api/osszetett/onlinejegy")
+def api_onlinejegy():
+    pass
+
+
+@app.route("/api/osszetett/berszabszam")
+def api_berszabszam():
+    pass
+
+
+@app.route("/api/osszetett/utasszam")
+def api_utasszam():
+    pass
