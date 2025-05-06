@@ -1043,7 +1043,7 @@ def osszetett_lekerdezesek():
     return render_template("osszetett_lekerdezesek.html")
 
 
-@app.route("/api/osszetett/jaratkereso")
+@app.route("/api_jaratkereso")
 def api_jaratkereso():
     connection, cursor = get_db()
     
@@ -1060,7 +1060,7 @@ def api_jaratkereso():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/utasszam")
+@app.route("/api_utasszam")
 def api_utasszam():
     connection, cursor = get_db()
     
@@ -1079,7 +1079,7 @@ def api_utasszam():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/eveskimutatas")
+@app.route("/api_eveskimutatas")
 def api_eveskimutatas():
     connection, cursor = get_db()
     
@@ -1091,7 +1091,7 @@ def api_eveskimutatas():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/arustat")
+@app.route("/api_arustat")
 def api_arustat():
     connection, cursor = get_db()
     
@@ -1103,7 +1103,7 @@ def api_arustat():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/onlinejegy")
+@app.route("/api_onlinejegy")
 def api_onlinejegy():
     connection, cursor = get_db()
     
@@ -1115,7 +1115,7 @@ def api_onlinejegy():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/berszam")
+@app.route("/api_berszam")
 def api_berszam():
     connection, cursor = get_db()
     
@@ -1126,7 +1126,7 @@ def api_berszam():
 
     berek = []
     for row in cursor.execute(
-        "SELECT a_azonosito, oraber"
+        "SELECT a_azonosito, oraber,"
     ):
         berek.append({})
     
@@ -1147,7 +1147,7 @@ def api_berszam():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/jegyvasarlas")
+@app.route("/api_jegyvasarlas")
 def api_jegyvasarlas():
     connection, cursor = get_db()
     
