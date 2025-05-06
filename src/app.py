@@ -1043,13 +1043,15 @@ def osszetett_lekerdezesek():
     return render_template("osszetett_lekerdezesek.html")
 
 
-@app.route("/api/osszetett/vonatkereso")
-def api_vonatkereso():
+@app.route("/api/osszetett/jaratkereso")
+def api_jaratkereso():
     connection, cursor = get_db()
     
+    destination_loc = request.form['jaratkereso_hova']
+
     result = []
     for row in cursor.execute( 
-        "SELECT Jarat.jarat_azonosito, Jarat.nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND =  a_azonosito = SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito"
+        f"SELECT Jarat.jarat_azonosito, Jarat.nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND a_azonosito = SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito AND nev = {destination_loc}"
     ):
         result.append({
             "jarat_azonosito": row[0],
@@ -1058,14 +1060,21 @@ def api_vonatkereso():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/jegyvasarlas")
+@app.route("/api/osszetett/utasszam")
 def api_jegyvasarlas():
     connection, cursor = get_db()
     
+    year = request.form['utasszam_ev']
+
     result = []
     for row in cursor.execute( 
+        f"SELECT jarat_azonosito SUM(utasszam) as sum, elso_osztalyu_helyek as maxelso, masod_osztalyu_helyek as maxmasod FROM Ut, Vonat WHERE YEAR(datum) = {year} GROUP BY jarat_azonosito HAVING COUNT(utasszam) > 0"
+
     ):
         result.append({
+            "jarat_azonosito": row[0],
+            "utasszam": row[1],
+            "max_hely": row[2] + row[3]
         })
     return jsonify(result)
 
@@ -1118,7 +1127,7 @@ def api_berszabszam():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/utasszam")
+@app.route("/api/osszetett/jegyvasarlas")
 def api_utasszam():
     connection, cursor = get_db()
     

@@ -9,10 +9,12 @@
     <div id="container">
         <h1>Összetett lekérdezések</h1>
         <div>
-            <form action="{{url_for(/api/osszetett/vonatkereso)}}">
-                <label>Vonatkereső</label>
-                <select name="vonatkereso_honnan">Indulópont</select>
-                <select name="vonatkereso_hova">Uticél</select>
+            <form action="{{url_for(/api/osszetett/jaratkereso)}}">
+                <label>Járatkereső</label>
+                <label>Uticél</label>
+                <select name="jaratkereso_hova">
+
+                </select>
                 <button type="submit">Keresés</button>
             </form>
         </div>
@@ -55,6 +57,7 @@
         <div>
             <form action="{{url_for(/api/osszetett/utasszam)}}">
                 <label>Járatok utasszámának kiszámítása</label>
+                <label>Válassz ki egy évet:<input name="utasszam_ev" type="number" min="1990" max="2025" step="1" value="2025"></label>
                 <button type="submit">Keresés</button>
             </form>
         </div>
