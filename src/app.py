@@ -1039,38 +1039,92 @@ def osszetett_lekerdezesek():
 
     if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
         return redirect(url_for("bejelentkezes"))
+    
+    return render_template("osszetett_lekerdezesek.html")
 
 
 @app.route("/api/osszetett/vonatkereso")
 def api_vonatkereso():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+        "SELECT Jarat.jarat_azonosito, Jarat.nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND =  a_azonosito = SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito"
+    ):
+        result.append({
+            "jarat_azonosito": row[0],
+            "nev": row[1]
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/jegyvasarlas")
 def api_jegyvasarlas():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/eveskimutatas")
 def api_eveskimutatas():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/arustat")
 def api_arustat():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/onlinejegy")
 def api_onlinejegy():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/berszabszam")
 def api_berszabszam():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
 
 
 @app.route("/api/osszetett/utasszam")
 def api_utasszam():
-    pass
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute( 
+    ):
+        result.append({
+        })
+    return jsonify(result)
