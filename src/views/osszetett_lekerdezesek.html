@@ -48,8 +48,25 @@
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/berszabszam)}}">
-                <label>Bérek, szabadságok kiszámítása</label>
+            <form action="{{url_for(/api/osszetett/berszam)}}">
+                <label>Bérek kiszámítása</label>
+                <label>Válassz ki egy évet:<input name="ber_ev" type="number" min="1990" max="2025" step="1" value="2025"></label>
+                <label>Válassz hónapot:
+                    <select name="ber_honap">
+                        <option value="1">Január</option>
+                        <option value="2">Február</option>
+                        <option value="3">Március</option>
+                        <option value="4">Április</option>
+                        <option value="5">Május</option>
+                        <option value="6">Június</option>
+                        <option value="7">Július</option>
+                        <option value="8">Augusztus</option>
+                        <option value="9">Szeptember</option>
+                        <option value="10">Október</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </label>
                 <button type="submit">Keresés</button>
             </form>
         </div>

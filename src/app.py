@@ -1061,7 +1061,7 @@ def api_jaratkereso():
 
 
 @app.route("/api/osszetett/utasszam")
-def api_jegyvasarlas():
+def api_utasszam():
     connection, cursor = get_db()
     
     year = request.form['utasszam_ev']
@@ -1115,20 +1115,40 @@ def api_onlinejegy():
     return jsonify(result)
 
 
-@app.route("/api/osszetett/berszabszam")
-def api_berszabszam():
+@app.route("/api/osszetett/berszam")
+def api_berszam():
     connection, cursor = get_db()
     
+    year = request.form['ber_ev']
+    month = request.form['ber_honap']
+
+
+
+    berek = []
+    for row in cursor.execute(
+        "SELECT a_azonosito, oraber"
+    ):
+        berek.append({})
+    
+    def berszamit():
+        
+
+
     result = []
     for row in cursor.execute( 
+        f"SELECT Alkalmazott.a_azonosito, nev, beosztas FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY a_azonosito HAVING COUNT(a_azonosito) > 0"
     ):
         result.append({
+            "a_azonosito": row[0],
+            "nev": row[1],
+            "beosztas": row[2],
+            "ber":
         })
     return jsonify(result)
 
 
 @app.route("/api/osszetett/jegyvasarlas")
-def api_utasszam():
+def api_jegyvasarlas():
     connection, cursor = get_db()
     
     result = []
