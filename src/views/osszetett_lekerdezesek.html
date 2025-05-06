@@ -9,7 +9,7 @@
     <div id="container">
         <h1>Összetett lekérdezések</h1>
         <div>
-            <form action="{{url_for(/api/osszetett/jaratkereso)}}">
+            <form action="{{url_for('api_jaratkereso')}}">
                 <label>Járatkereső</label>
                 <label>Uticél</label>
                 <select name="jaratkereso_hova">
@@ -20,35 +20,35 @@
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/jegyvasarlas)}}">
+            <form action="{{url_for('api_jegyvasarlas')}}">
                 <label>Jegyvásárlás</label>
                 <button type="submit">Keresés</button>
             </form>
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/eveskimutatas)}}">
+            <form action="{{url_for('api_eveskimutatas')}}">
                 <label>Éves kimutatás</label>
                 <button type="submit">Keresés</button>
             </form>
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/arustat)}}">
+            <form action="{{url_for('api_arustat')}}">
                 <label>Árúsítási statisztika</label>
                 <button type="submit">Keresés</button>
             </form>
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/onlinejegy)}}">
+            <form action="{{url_for('api_onlinejegy')}}">
                 <label>Online Jegyrendelés</label>
                 <button type="submit">Keresés</button>
             </form>
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/berszam)}}">
+            <form action="{{url_for('api_berszam')}}">
                 <label>Bérek kiszámítása</label>
                 <label>Válassz ki egy évet:<input name="ber_ev" type="number" min="1990" max="2025" step="1" value="2025"></label>
                 <label>Válassz hónapot:
@@ -72,7 +72,7 @@
         </div>
 
         <div>
-            <form action="{{url_for(/api/osszetett/utasszam)}}">
+            <form action="{{url_for('api_utasszam')}}">
                 <label>Járatok utasszámának kiszámítása</label>
                 <label>Válassz ki egy évet:<input name="utasszam_ev" type="number" min="1990" max="2025" step="1" value="2025"></label>
                 <button type="submit">Keresés</button>

@@ -891,7 +891,7 @@ def alaplekerdezesek():
 
     # Felhasználók betöltése
     felhasznalok = {}
-    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+    for row in cursor.execute("SELECT felhasznalonev, jelszo, szuletesi_ido, alkalmazott, administrator FROM Felhasznalo"):
         felhasznalok[row[0]] = {
             "password": row[1],
             "szul_ido": row[2],
@@ -911,13 +911,13 @@ def alaplekerdezesek():
         "munkabeosztas": []
     }
 
-    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+    for row in cursor.execute("SELECT felhasznalonev, jelszo, szuletesi_ido, alkalmazott, administrator FROM Felhasznalo"):
         alapadatok["felhasznalok"].append({
             "azonosito": row[0], "jelszo": row[1], "szul_ido": row[2],
             "alkalmazott": row[3], "administrator": row[4]
         })
 
-    for row in cursor.execute("SELECT kedvezmeny_id, leiras, osszeg FROM Kedvezmeny"):
+    for row in cursor.execute("SELECT k_azonosito, nev, kedvezmeny_szazalek FROM Kedvezmeny"):
         alapadatok["kedvezmenyek"].append({
             "id": row[0], "leiras": row[1], "osszeg": row[2]
         })
@@ -927,14 +927,14 @@ def alaplekerdezesek():
             "id": row[0], "nev": row[1], "beosztas": row[2]
         })
 
-    for row in cursor.execute("SELECT szabadsag_id, alkalmazott_id, datum FROM Szabadsag"):
+    for row in cursor.execute("SELECT sz_azonosito, mettol, a_azonosito FROM Szabadsag"):
         alapadatok["szabadsagok"].append({
-            "id": row[0], "alkalmazott_id": row[1], "datum": row[2]
+            "id": row[0], "alkalmazott_id": row[2], "datum": row[1]
         })
 
-    for row in cursor.execute("SELECT beosztas_id, alkalmazott_id, nap, muszak FROM Munkabeosztas"):
+    for row in cursor.execute("SELECT m_azonosito, milyen_nap, kezdet, a_azonosito FROM Munkabeosztas"):
         alapadatok["munkabeosztas"].append({
-            "id": row[0], "alkalmazott_id": row[1], "nap": row[2], "muszak": row[3]
+            "id": row[0], "alkalmazott_id": row[3], "nap": row[1], "muszak": row[2]
         })
 
     return render_template("alaplekerdezesek.html", alapadatok=alapadatok)
@@ -951,7 +951,7 @@ def alaplekerdezesek():
 def api_felhasznalok():
     connection, cursor = get_db()
     eredmeny = []
-    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+    for row in cursor.execute("SELECT felhasznalonev, jelszo, szuletesi_ido, alkalmazott, administrator FROM Felhasznalo"):
         eredmeny.append({
             "azonosito": row[0],
             "jelszo": row[1],
@@ -1006,7 +1006,7 @@ def api_szabadsagok():
 def api_munkabeosztas():
     connection, cursor = get_db()
     eredmeny = []
-    for row in cursor.execute("SELECT mb_azonosito, a_azonosito, nap, muszak FROM Munkabeosztas"):
+    for row in cursor.execute("SELECT m_azonosito, a_azonosito, milyen_nap, kezdet FROM Munkabeosztas"):
         eredmeny.append({
             "id": row[0],
             "alkalmazott_id": row[1],
@@ -1029,7 +1029,7 @@ def osszetett_lekerdezesek():
     connection, cursor = get_db()
 
     felhasznalok = {}
-    for row in cursor.execute("SELECT azonosito, jelszo, szul_ido, alkalmazott, administrator FROM Felhasznalo"):
+    for row in cursor.execute("SELECT felhasznalonev, jelszo, szuletesi_ido, alkalmazott, administrator FROM Felhasznalo"):
         felhasznalok[row[0]] = {
             "password": row[1],
             "szul_ido": row[2],
