@@ -1083,11 +1083,49 @@ def api_utasszam():
 def api_eveskimutatas():
     connection, cursor = get_db()
     
-    result = []
-    for row in cursor.execute( 
-    ):
-        result.append({
-        })
+    cursor.execute("""
+            SELECT
+                NVL((
+                    SELECT SUM((mb.veg - mb.kezdet) * a.oraber)
+                    FROM Munkabeosztas mb
+                    JOIN Alkalmazott a ON mb.a_azonosito = a.a_azonosito
+                    WHERE EXTRACT(YEAR FROM mb.milyen_nap) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+                ), 0) AS dolgozoi_koltseg,
+
+                NVL((
+                    SELECT SUM(j.ar * (1 - NVL(k.kedvezmeny_szazalek, 0)/100))
+                    FROM Vasarlas v
+                    JOIN Jegy j ON v.jegy_azonosito = j.jegy_azonosito
+                    LEFT JOIN Kedvezmeny k ON v.k_azonosito = k.k_azonosito
+                    WHERE EXTRACT(YEAR FROM v.idopont) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+                ), 0) AS jegy_bevetel,
+
+                (
+                    NVL((
+                        SELECT SUM(j.ar * (1 - NVL(k.kedvezmeny_szazalek, 0)/100))
+                        FROM Vasarlas v
+                        JOIN Jegy j ON v.jegy_azonosito = j.jegy_azonosito
+                        LEFT JOIN Kedvezmeny k ON v.k_azonosito = k.k_azonosito
+                        WHERE EXTRACT(YEAR FROM v.idopont) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+                    ), 0)
+                    -
+                    NVL((
+                        SELECT SUM((mb.veg - mb.kezdet) * a.oraber)
+                        FROM Munkabeosztas mb
+                        JOIN Alkalmazott a ON mb.a_azonosito = a.a_azonosito
+                        WHERE EXTRACT(YEAR FROM mb.milyen_nap) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+                    ), 0)
+                ) AS nyereseg
+            FROM dual
+        """)
+
+    row = cursor.fetchone()
+    result = {
+        "dolgozoi_koltseg": row[0],
+        "jegy_bevetel": row[1],
+        "nyereseg": row[2]
+    }
+
     return jsonify(result)
 
 
