@@ -1,120 +1,119 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kedvezmények</title>
-</head>
-<body>
-    <h1>Kedvezmények</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Név</th>
-                <th>Mérték (%)</th>
-                <th>Szerkesztés</th>
-                <th>Törlés</th>
-            </tr>
-        </thead>
-        <tbody id="kedvezmeny-adatok">
-        {% for k in kedvezmeny_adatok %}
-            <tr class="kedvezmeny-sor">
-                <td class="kedvezmeny-id" data-id="{{ k.id }}">{{ k.id }}</td>
-                <td class="kedvezmeny-nev" data-nev="{{ k.nev }}">{{ k.nev }}</td>
-                <td class="kedvezmeny-mertek" data-mertek="{{ k.mertek }}">{{ k.mertek }}</td>
-                <td><button onclick="editKedvezmeny({{ k.id }})">*</button></td>
-                <td><button onclick="deleteKedvezmeny({{ k.id }})">X</button></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <input id="kedvezmeny-nev-input" type="text" placeholder="Kedvezmény neve">
-    <input id="kedvezmeny-mertek-input" type="number" placeholder="Mérték (%)">
-    <button onclick="ujKedvezmeny()">+</button><br>
+{% extends "index.html" %}
 
-    <button onclick="mentes()">Mentés</button>
-    <a href="/">
-        <button>Mégse</button>
-    </a>
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Név</th>
+            <th>Mérték (%)</th>
+            {% if admin != 0 %}
+            <th>Szerkesztés</th>
+            <th>Törlés</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody id="kedvezmeny-adatok">
+    {% for k in kedvezmeny_adatok %}
+        <tr class="kedvezmeny-sor">
+            <td class="kedvezmeny-id" data-id="{{ k.id }}">{{ k.id }}</td>
+            <td class="kedvezmeny-nev" data-nev="{{ k.nev }}">{{ k.nev }}</td>
+            <td class="kedvezmeny-mertek" data-mertek="{{ k.mertek }}">{{ k.mertek }}</td>
+            {% if admin != 0 %}
+            <td><button onclick="editKedvezmeny({{ k.id }})">*</button></td>
+            <td><button onclick="deleteKedvezmeny({{ k.id }})">X</button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if admin != 0 %}
+<input id="kedvezmeny-nev-input" type="text" placeholder="Kedvezmény neve">
+<input id="kedvezmeny-mertek-input" type="number" placeholder="Mérték (%)">
+<button onclick="ujKedvezmeny()">+</button><br>
+
+<button onclick="mentes()">Mentés</button>
+<a href="/">
+    <button>Mégse</button>
+</a>
 
 <script>
-    var kedvezmenyTable = document.getElementById("kedvezmeny-adatok");
-    var nevInput = document.getElementById("kedvezmeny-nev-input");
-    var mertekInput = document.getElementById("kedvezmeny-mertek-input");
+var kedvezmenyTable = document.getElementById("kedvezmeny-adatok");
+var nevInput = document.getElementById("kedvezmeny-nev-input");
+var mertekInput = document.getElementById("kedvezmeny-mertek-input");
 
-    var editingKedvezmeny = -1;
+var editingKedvezmeny = -1;
 
-    function editKedvezmeny(id){
+function editKedvezmeny(id){
+    for (let row of kedvezmenyTable.rows) {
+        if (row.querySelector(".kedvezmeny-id").dataset.id == id) {
+            nevInput.value = row.querySelector(".kedvezmeny-nev").dataset.nev;
+            mertekInput.value = row.querySelector(".kedvezmeny-mertek").dataset.mertek;
+            editingKedvezmeny = id;
+            break;
+        }
+    }
+}
+
+function deleteKedvezmeny(id){
+    for (let row of kedvezmenyTable.rows) {
+        if (row.querySelector(".kedvezmeny-id").dataset.id == id) {
+            row.remove();
+            break;
+        }
+    }
+    editingKedvezmeny = -1;
+}
+
+function ujKedvezmeny(){
+    if (editingKedvezmeny == -1) {
+        let ujId = 0;
         for (let row of kedvezmenyTable.rows) {
-            if (row.querySelector(".kedvezmeny-id").dataset.id == id) {
-                nevInput.value = row.querySelector(".kedvezmeny-nev").dataset.nev;
-                mertekInput.value = row.querySelector(".kedvezmeny-mertek").dataset.mertek;
-                editingKedvezmeny = id;
-                break;
+            let id = Number(row.querySelector(".kedvezmeny-id").dataset.id);
+            if (id > ujId) ujId = id;
+        }
+        ujId++;
+        let ujSor = kedvezmenyTable.insertRow();
+        ujSor.innerHTML = `
+            <td class="kedvezmeny-id" data-id="${ujId}">-</td>
+            <td class="kedvezmeny-nev" data-nev="${nevInput.value}">${nevInput.value}</td>
+            <td class="kedvezmeny-mertek" data-mertek="${mertekInput.value}">${mertekInput.value}</td>
+            <td><button onclick="editKedvezmeny(${ujId})">*</button></td>
+            <td><button onclick="deleteKedvezmeny(${ujId})">X</button></td>
+        `;
+    } else {
+        for (let row of kedvezmenyTable.rows) {
+            if (row.querySelector(".kedvezmeny-id").dataset.id == editingKedvezmeny) {
+                row.querySelector(".kedvezmeny-nev").innerText = nevInput.value;
+                row.querySelector(".kedvezmeny-nev").dataset.nev = nevInput.value;
+                row.querySelector(".kedvezmeny-mertek").innerText = mertekInput.value;
+                row.querySelector(".kedvezmeny-mertek").dataset.mertek = mertekInput.value;
             }
         }
     }
+    editingKedvezmeny = -1;
+}
 
-    function deleteKedvezmeny(id){
-        for (let row of kedvezmenyTable.rows) {
-            if (row.querySelector(".kedvezmeny-id").dataset.id == id) {
-                row.remove();
-                break;
-            }
-        }
-        editingKedvezmeny = -1;
-    }
-
-    function ujKedvezmeny(){
-        if (editingKedvezmeny == -1) {
-            let ujId = 0;
-            for (let row of kedvezmenyTable.rows) {
-                let id = Number(row.querySelector(".kedvezmeny-id").dataset.id);
-                if (id > ujId) ujId = id;
-            }
-            ujId++;
-            let ujSor = kedvezmenyTable.insertRow();
-            ujSor.innerHTML = `
-                <td class="kedvezmeny-id" data-id="${ujId}">-</td>
-                <td class="kedvezmeny-nev" data-nev="${nevInput.value}">${nevInput.value}</td>
-                <td class="kedvezmeny-mertek" data-mertek="${mertekInput.value}">${mertekInput.value}</td>
-                <td><button onclick="editKedvezmeny(${ujId})">*</button></td>
-                <td><button onclick="deleteKedvezmeny(${ujId})">X</button></td>
-            `;
-        } else {
-            for (let row of kedvezmenyTable.rows) {
-                if (row.querySelector(".kedvezmeny-id").dataset.id == editingKedvezmeny) {
-                    row.querySelector(".kedvezmeny-nev").innerText = nevInput.value;
-                    row.querySelector(".kedvezmeny-nev").dataset.nev = nevInput.value;
-                    row.querySelector(".kedvezmeny-mertek").innerText = mertekInput.value;
-                    row.querySelector(".kedvezmeny-mertek").dataset.mertek = mertekInput.value;
-                }
-            }
-        }
-        editingKedvezmeny = -1;
-    }
-
-    function mentes(){
-        let data = [];
-        for (let row of kedvezmenyTable.rows) {
-            data.push({
-                id: Number(row.querySelector(".kedvezmeny-id").dataset.id),
-                nev: row.querySelector(".kedvezmeny-nev").dataset.nev,
-                mertek: Number(row.querySelector(".kedvezmeny-mertek").dataset.mertek)
-            });
-        }
-
-        fetch("/kedvezmenyek", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-type": "application/json",
-            },
-        }).then(response => {
-            location.href = "/kedvezmenyek";
+function mentes(){
+    let data = [];
+    for (let row of kedvezmenyTable.rows) {
+        data.push({
+            id: Number(row.querySelector(".kedvezmeny-id").dataset.id),
+            nev: row.querySelector(".kedvezmeny-nev").dataset.nev,
+            mertek: Number(row.querySelector(".kedvezmeny-mertek").dataset.mertek)
         });
     }
+
+    fetch("/kedvezmenyek", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json",
+        },
+    }).then(response => {
+        location.href = "/kedvezmenyek";
+    });
+}
 </script>
-</body>
-</html>
+{% endif %}
+{% endblock %}

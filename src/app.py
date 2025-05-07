@@ -8,9 +8,10 @@ import getpass
 import oracledb
 
 
-un = input("Enter database username: ").strip()
-pw = getpass.getpass("Enter database password for " + un + ": ")
-
+#un = input("Enter database username: ").strip()
+#pw = getpass.getpass("Enter database password for " + un + ": ")
+un = "C##Q8AUMD"
+pw = "Q8AUMD"
 
 def get_db():
     if 'db' not in g:
@@ -59,9 +60,17 @@ felhasznalok = {}
 
 @app.route("/")
 def index():
+    global felhasznalok
+
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+    
     if "user" not in session:
         return redirect(url_for("bejelentkezes"))
-    return render_template("index.html", user=session["user"])
+    return render_template("index.html", user=session["user"], admin=felhasznalok[session["user"]]["administrator"])
 
 @app.route("/bejelentkezes", methods=["GET", "POST"])
 def bejelentkezes():
@@ -137,7 +146,7 @@ def vonatok():
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     vonat_adatok = []
@@ -190,7 +199,7 @@ def vonatok():
 
         return redirect(url_for("vonatok"))
 
-    return render_template("vonatok.html", vonat_adatok=vonat_adatok)
+    return render_template("vonatok.html", vonat_adatok=vonat_adatok, admin=felhasznalok[session["user"]]["administrator"])
 
 
 @app.route("/jaratok", methods=['POST', 'GET'])
@@ -207,7 +216,7 @@ def jaratok():
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     vonat_adatok = []
@@ -290,13 +299,14 @@ def jaratok():
 
         return redirect(url_for("jaratok"))
 
-    return render_template("jaratok.html", jarat_adatok=jarat_adatok, vonat_adatok=vonat_adatok, max_csatlakozas_id=max_csatlakozas_id)
+    return render_template("jaratok.html", jarat_adatok=jarat_adatok, vonat_adatok=vonat_adatok, max_csatlakozas_id=max_csatlakozas_id, admin=felhasznalok[session["user"]]["administrator"])
 
 
 @app.route("/utvonal/<jarat_id>", methods=['POST', 'GET'])
 def utvonal(jarat_id):
     global allomas_adatok
     global csatlakozas_adatok
+    global felhasznalok
 
     connection, cursor = get_db()
 
@@ -304,7 +314,7 @@ def utvonal(jarat_id):
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     jarat_csatlakozas_adatok = []
@@ -365,7 +375,7 @@ def utvonal(jarat_id):
 
         return redirect(url_for("utvonal", jarat_id=jarat_id))
 
-    return render_template("utvonal.html", csatlakozas_adatok = jarat_csatlakozas_adatok, allomas_adatok = allomas_adatok, jarat_id=jarat_id)
+    return render_template("utvonal.html", csatlakozas_adatok = jarat_csatlakozas_adatok, allomas_adatok = allomas_adatok, jarat_id=jarat_id, admin=felhasznalok[session["user"]]["administrator"])
 
 
 @app.route("/allomasok", methods=['POST', 'GET'])
@@ -379,7 +389,7 @@ def allomasok():
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     allomas_adatok = []
@@ -432,7 +442,7 @@ def allomasok():
 
         return redirect(url_for("allomasok"))
 
-    return render_template("allomasok.html", allomas_adatok=allomas_adatok)
+    return render_template("allomasok.html", allomas_adatok=allomas_adatok, admin=felhasznalok[session["user"]]["administrator"])
 
 
 @app.route("/jegyek", methods=['POST', 'GET'])
@@ -446,7 +456,7 @@ def jegyek():
     for row in cursor.execute("select * from Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     jegy_adatok = []
@@ -500,7 +510,7 @@ def jegyek():
 
         return redirect(url_for("jegyek"))
 
-    return render_template("jegyek.html", jegy_adatok=jegy_adatok)
+    return render_template("jegyek.html", jegy_adatok=jegy_adatok, admin=felhasznalok[session["user"]]["administrator"])
 
 
 
@@ -601,7 +611,7 @@ def kedvezmenyek():
     for row in cursor.execute("SELECT * FROM Felhasznalo"):
         felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator": row[4]}
 
-    if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
+    if "user" not in session:
         return redirect(url_for("bejelentkezes"))
 
     kedvezmeny_adatok = []
@@ -652,7 +662,7 @@ def kedvezmenyek():
 
         return redirect(url_for("kedvezmenyek"))
 
-    return render_template("kedvezmenyek.html", kedvezmeny_adatok=kedvezmeny_adatok)
+    return render_template("kedvezmenyek.html", kedvezmeny_adatok=kedvezmeny_adatok, admin=felhasznalok[session["user"]]["administrator"])
 
 
 @app.route("/alkalmazottak", methods=["POST", "GET"])
@@ -1168,10 +1178,6 @@ def api_berszam():
     ):
         berek.append({})
     
-    def berszamit():
-        
-
-
     result = []
     for row in cursor.execute( 
         f"SELECT Alkalmazott.a_azonosito, nev, beosztas FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY a_azonosito HAVING COUNT(a_azonosito) > 0"
@@ -1180,7 +1186,7 @@ def api_berszam():
             "a_azonosito": row[0],
             "nev": row[1],
             "beosztas": row[2],
-            "ber":
+            "ber":100000
         })
     return jsonify(result)
 
