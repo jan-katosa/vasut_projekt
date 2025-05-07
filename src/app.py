@@ -8,10 +8,8 @@ import getpass
 import oracledb
 
 
-#un = input("Enter database username: ").strip()
-#pw = getpass.getpass("Enter database password for " + un + ": ")
-un = "C##Q8AUMD"
-pw = "Q8AUMD"
+un = input("Enter database username: ").strip()
+pw = getpass.getpass("Enter database password for " + un + ": ")
 
 def get_db():
     if 'db' not in g:
@@ -1170,23 +1168,16 @@ def api_berszam():
     year = request.form['ber_ev']
     month = request.form['ber_honap']
 
-
-
-    berek = []
-    for row in cursor.execute(
-        "SELECT a_azonosito, oraber,"
-    ):
-        berek.append({})
-    
     result = []
     for row in cursor.execute( 
-        f"SELECT Alkalmazott.a_azonosito, nev, beosztas FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY a_azonosito HAVING COUNT(a_azonosito) > 0"
+        f"SELECT Alkalmazott.a_azonosito, nev, beosztas, kezdet, veg, oraber FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY a_azonosito HAVING COUNT(a_azonosito) > 0"
     ):
         result.append({
             "a_azonosito": row[0],
             "nev": row[1],
             "beosztas": row[2],
-            "ber":100000
+            "munkaido (ora)": (row[4] - row[3]) / 60,
+            "ber": ((row[4] - row[3]) / 60) * row[5]
         })
     return jsonify(result)
 
