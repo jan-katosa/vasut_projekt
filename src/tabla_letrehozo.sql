@@ -339,12 +339,12 @@ INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-05-01'
 INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-05-11', 'YYYY-MM-DD'), TO_DATE('2024-05-20', 'YYYY-MM-DD'), 5);
 
 
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-06', 480, 960, 1);
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-07', 480, 960, 2);
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-08', 480, 960, 3);
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-09', 480, 960, 4);
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-10', 480, 960, 5);
-INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2024-04-11', 480, 960, 1);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-06', 480, 960, 1);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-07', 480, 960, 2);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-08', 480, 960, 3);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-09', 480, 960, 4);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-10', 480, 960, 5);
+INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-11', 480, 960, 1);
 
 
 
