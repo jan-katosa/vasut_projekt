@@ -256,6 +256,11 @@ GROUP BY
 ORDER BY
   ev, honap, a.a_azonosito;
 
+
+
+
+
+
 ALTER TRIGGER kedvezmeny_trigger ENABLE;
 ALTER TRIGGER beosztas_ellenorzes ENABLE;
 
@@ -356,3 +361,48 @@ INSERT INTO Ut (u_azonosito, utasszam, datum, jarat_azonosito) VALUES (10, 267, 
 
 
 COMMIT;
+
+
+
+-- (eladás - kiadás) = nyereseg/veszteseg Éves kimutatás Jani
+
+SELECT
+    -- Dolgozói költség kiszámítása (ledolgozott órák × órabér)
+    (SELECT SUM(
+        (mb.veg - mb.kezdet) * a.oraber
+    )
+     FROM Munkabeosztas mb
+     JOIN Alkalmazott a ON mb.a_azonosito = a.a_azonosito
+     WHERE EXTRACT(YEAR FROM mb.milyen_nap) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+    ) AS dolgozoi_koltseg,
+
+    -- Jegybevétel kiszámítása (jegy ára × (1 - kedvezmény))
+    (SELECT SUM(
+        j.ar * (1 - NVL(k.kedvezmeny_szazalek, 0)/100)
+    )
+     FROM Vasarlas v
+     JOIN Jegy j ON v.jegy_azonosito = j.jegy_azonosito
+     LEFT JOIN Kedvezmeny k ON v.k_azonosito = k.k_azonosito
+     WHERE EXTRACT(YEAR FROM v.idopont) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+    ) AS jegy_bevetel,
+
+    -- Nyereség = Jegybevétel - dolgozói költség
+    (
+      (SELECT SUM(
+          j.ar * (1 - NVL(k.kedvezmeny_szazalek, 0)/100)
+      )
+       FROM Vasarlas v
+       JOIN Jegy j ON v.jegy_azonosito = j.jegy_azonosito
+       LEFT JOIN Kedvezmeny k ON v.k_azonosito = k.k_azonosito
+       WHERE EXTRACT(YEAR FROM v.idopont) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+      )
+      -
+      (SELECT SUM(
+          (mb.veg - mb.kezdet) * a.oraber
+      )
+       FROM Munkabeosztas mb
+       JOIN Alkalmazott a ON mb.a_azonosito = a.a_azonosito
+       WHERE EXTRACT(YEAR FROM mb.milyen_nap) = TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+      )
+    ) AS nyereseg
+FROM dual;

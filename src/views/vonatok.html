@@ -1,164 +1,164 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vonatok</title>
-</head>
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Elsőosztályú helyek száma</th>
-                <th>Másodosztályú helyek száma</th>
-                <th>Szerkesztés</th>
-                <th>Törlés</th>
-            </tr>
-        </thead>
-        <tbody id="vonat-adatok">
-        {% for vonat in vonat_adatok %}
-            <tr class="vonat-adat-sor">
-                <td class="vonat-id" data-id="{{ vonat.id }}">{{ vonat.id }}</td>
-                <td class="vonat-elsoosztaly" data-elsoosztaly="{{ vonat.elsoosztaly }}">{{ vonat.elsoosztaly }}</td>
-                <td class="vonat-masodosztaly" data-masodosztaly="{{ vonat.masodosztaly }}">{{ vonat.masodosztaly }}</td>
-                <td><button onclick="editVonat({{ vonat.id }})">*</button></td>
-                <td><button onclick="deleteVonat({{ vonat.id }})">X</button></td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <input id="elsoosztaly-input" type="number" value="10">
-    <input id="masodosztaly-input" type="number" value="20">
-    <button onclick="ujVonat()">+</button><br>
+{% extends "index.html" %}
 
-    <button onclick="mentes()">Mentés</button>
-    <a href="/">
-        <button>Mégse</button>
-    </a>
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Elsőosztályú helyek száma</th>
+            <th>Másodosztályú helyek száma</th>
+            {% if admin != 0 %}
+            <th>Szerkesztés</th>
+            <th>Törlés</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody id="vonat-adatok">
+    {% for vonat in vonat_adatok %}
+        <tr class="vonat-adat-sor">
+            <td class="vonat-id" data-id="{{ vonat.id }}">{{ vonat.id }}</td>
+            <td class="vonat-elsoosztaly" data-elsoosztaly="{{ vonat.elsoosztaly }}">{{ vonat.elsoosztaly }}</td>
+            <td class="vonat-masodosztaly" data-masodosztaly="{{ vonat.masodosztaly }}">{{ vonat.masodosztaly }}</td>
+            {% if admin != 0 %}
+            <td><button onclick="editVonat({{ vonat.id }})">*</button></td>
+            <td><button onclick="deleteVonat({{ vonat.id }})">X</button></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if admin != 0 %}
+<input id="elsoosztaly-input" type="number" value="10">
+<input id="masodosztaly-input" type="number" value="20">
+<button onclick="ujVonat()">+</button><br>
+
+<button onclick="mentes()">Mentés</button>
+<a href="/">
+    <button>Mégse</button>
+</a>
 
 
-    <script>
-        var vonatTable = document.getElementById("vonat-adatok");
-        var elsoosztalyInput = document.getElementById("elsoosztaly-input");
-        var masodosztalyInput = document.getElementById("masodosztaly-input");
+<script>
+    var vonatTable = document.getElementById("vonat-adatok");
+    var elsoosztalyInput = document.getElementById("elsoosztaly-input");
+    var masodosztalyInput = document.getElementById("masodosztaly-input");
 
-        var editingVonat = -1;
+    var editingVonat = -1;
 
-        function editVonat(id){
-            for(let i = 0; i<vonatTable.childNodes.length; i++){
-                if(vonatTable.childNodes[i].classList !== undefined){
-                    let idMezo = vonatTable.childNodes[i].querySelector(".vonat-id");
-                    let elsoosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-elsoosztaly");
-                    let masodosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-masodosztaly");
-                    if(idMezo.dataset.id==id){
-                        elsoosztalyInput.value = elsoosztalyMezo.dataset.elsoosztaly;
-                        masodosztalyInput.value = masodosztalyMezo.dataset.masodosztaly;
+    function editVonat(id){
+        for(let i = 0; i<vonatTable.childNodes.length; i++){
+            if(vonatTable.childNodes[i].classList !== undefined){
+                let idMezo = vonatTable.childNodes[i].querySelector(".vonat-id");
+                let elsoosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-elsoosztaly");
+                let masodosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-masodosztaly");
+                if(idMezo.dataset.id==id){
+                    elsoosztalyInput.value = elsoosztalyMezo.dataset.elsoosztaly;
+                    masodosztalyInput.value = masodosztalyMezo.dataset.masodosztaly;
 
+                    break;
+                }
+            }
+        }
+        editingVonat = id;
+    }
+
+    function deleteVonat(id){
+
+        for(let i = 0; i<vonatTable.childNodes.length; i++){
+            if(vonatTable.childNodes[i].classList !== undefined){
+                let vonatMezok = vonatTable.childNodes[i].childNodes;
+                for(let j=0; j<vonatMezok.length; j++){
+                    if(vonatMezok[j].classList !== undefined && vonatMezok[j].classList.contains("vonat-id")){
+                        if(id == Number(vonatMezok[j].dataset.id)){
+                            vonatTable.childNodes[i].remove();
+                        }
                         break;
                     }
                 }
             }
-            editingVonat = id;
         }
 
-        function deleteVonat(id){
+        editingVonat = -1;
+    }
 
+    function ujVonat(){
+        if(editingVonat == -1){
+
+            let ujId = 0;
             for(let i = 0; i<vonatTable.childNodes.length; i++){
                 if(vonatTable.childNodes[i].classList !== undefined){
                     let vonatMezok = vonatTable.childNodes[i].childNodes;
                     for(let j=0; j<vonatMezok.length; j++){
                         if(vonatMezok[j].classList !== undefined && vonatMezok[j].classList.contains("vonat-id")){
-                            if(id == Number(vonatMezok[j].dataset.id)){
-                                vonatTable.childNodes[i].remove();
+                            if(ujId < Number(vonatMezok[j].dataset.id)){
+                                ujId = Number(vonatMezok[j].dataset.id);
                             }
                             break;
                         }
                     }
                 }
             }
+            ujId++;
+            let ujSor = document.createElement("tr");
+            ujSor.classList.add("vonat-adat-sor");
+            let ujData = '<td class="vonat-id" data-id="'+ujId+'">-</td><td class="vonat-elsoosztaly" data-elsoosztaly="'+elsoosztalyInput.value+'">'+elsoosztalyInput.value+'</td><td class="vonat-masodosztaly" data-masodosztaly="'+masodosztalyInput.value+'">'+masodosztalyInput.value+'</td><td>-</td><td><button onclick="deleteVonat('+ujId+')">X</button></td>';
+            ujSor.innerHTML = ujData;
+            vonatTable.appendChild(ujSor);
 
-            editingVonat = -1;
-        }
-
-        function ujVonat(){
-            if(editingVonat == -1){
-
-                let ujId = 0;
-                for(let i = 0; i<vonatTable.childNodes.length; i++){
-                    if(vonatTable.childNodes[i].classList !== undefined){
-                        let vonatMezok = vonatTable.childNodes[i].childNodes;
-                        for(let j=0; j<vonatMezok.length; j++){
-                            if(vonatMezok[j].classList !== undefined && vonatMezok[j].classList.contains("vonat-id")){
-                                if(ujId < Number(vonatMezok[j].dataset.id)){
-                                    ujId = Number(vonatMezok[j].dataset.id);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                ujId++;
-                let ujSor = document.createElement("tr");
-                ujSor.classList.add("vonat-adat-sor");
-                let ujData = '<td class="vonat-id" data-id="'+ujId+'">-</td><td class="vonat-elsoosztaly" data-elsoosztaly="'+elsoosztalyInput.value+'">'+elsoosztalyInput.value+'</td><td class="vonat-masodosztaly" data-masodosztaly="'+masodosztalyInput.value+'">'+masodosztalyInput.value+'</td><td>-</td><td><button onclick="deleteVonat('+ujId+')">X</button></td>';
-                ujSor.innerHTML = ujData;
-                vonatTable.appendChild(ujSor);
-
-            }else{
-                for(let i = 0; i<vonatTable.childNodes.length; i++){
-                    if(vonatTable.childNodes[i].classList !== undefined){
-                        let vonatMezok = vonatTable.childNodes[i].childNodes;
-                        for(let j=0; j<vonatMezok.length; j++){
-                            if(vonatMezok[j].classList !== undefined && vonatMezok[j].classList.contains("vonat-id")){
-                                if(editingVonat == Number(vonatMezok[j].dataset.id)){
-                                    let ujData = '<td class="vonat-id" data-id="'+editingVonat+'">'+editingVonat+'</td><td class="vonat-elsoosztaly" data-elsoosztaly="'+elsoosztalyInput.value+'">'+elsoosztalyInput.value+'</td><td class="vonat-masodosztaly" data-masodosztaly="'+masodosztalyInput.value+'">'+masodosztalyInput.value+'</td><td><button onclick="editVonat('+editingVonat+')">*</button></td><td><button onclick="deleteVonat('+editingVonat+')">X</button></td>';
-                                    vonatTable.childNodes[i].innerHTML = ujData;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            editingVonat = -1;
-        }
-
-        function mentes(){
-
-            let data = [];
-
+        }else{
             for(let i = 0; i<vonatTable.childNodes.length; i++){
                 if(vonatTable.childNodes[i].classList !== undefined){
-                    let idMezo = vonatTable.childNodes[i].querySelector(".vonat-id");
-                    let elsoosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-elsoosztaly");
-                    let masodosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-masodosztaly");
-
-                    let vonatData = {
-                        id: Number(idMezo.dataset.id),
-                        elsoosztaly: Number(elsoosztalyMezo.dataset.elsoosztaly),
-                        masodosztaly: Number(masodosztalyMezo.dataset.masodosztaly),
-                    };
-
-                    data.push(vonatData);
+                    let vonatMezok = vonatTable.childNodes[i].childNodes;
+                    for(let j=0; j<vonatMezok.length; j++){
+                        if(vonatMezok[j].classList !== undefined && vonatMezok[j].classList.contains("vonat-id")){
+                            if(editingVonat == Number(vonatMezok[j].dataset.id)){
+                                let ujData = '<td class="vonat-id" data-id="'+editingVonat+'">'+editingVonat+'</td><td class="vonat-elsoosztaly" data-elsoosztaly="'+elsoosztalyInput.value+'">'+elsoosztalyInput.value+'</td><td class="vonat-masodosztaly" data-masodosztaly="'+masodosztalyInput.value+'">'+masodosztalyInput.value+'</td><td><button onclick="editVonat('+editingVonat+')">*</button></td><td><button onclick="deleteVonat('+editingVonat+')">X</button></td>';
+                                vonatTable.childNodes[i].innerHTML = ujData;
+                            }
+                            break;
+                        }
+                    }
                 }
             }
+        }
+        editingVonat = -1;
+    }
 
+    function mentes(){
 
-            fetch("/vonatok",
-                {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                    "Content-type": "application/json",
-                    },
-                }).then(
-                    response => {
-                        location.href = "/vonatok";
-                    }
-                );
+        let data = [];
+
+        for(let i = 0; i<vonatTable.childNodes.length; i++){
+            if(vonatTable.childNodes[i].classList !== undefined){
+                let idMezo = vonatTable.childNodes[i].querySelector(".vonat-id");
+                let elsoosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-elsoosztaly");
+                let masodosztalyMezo = vonatTable.childNodes[i].querySelector(".vonat-masodosztaly");
+
+                let vonatData = {
+                    id: Number(idMezo.dataset.id),
+                    elsoosztaly: Number(elsoosztalyMezo.dataset.elsoosztaly),
+                    masodosztaly: Number(masodosztalyMezo.dataset.masodosztaly),
+                };
+
+                data.push(vonatData);
+            }
         }
 
-    </script>
-</body>
-</html>
+
+        fetch("/vonatok",
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                "Content-type": "application/json",
+                },
+            }).then(
+                response => {
+                    location.href = "/vonatok";
+                }
+            );
+    }
+
+</script>
+{% endif %}
+{% endblock %}

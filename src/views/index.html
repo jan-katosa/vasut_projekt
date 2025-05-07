@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/src/style/style.scss">
+    <link rel="stylesheet" href="/static/style/style.css">
     <title>Vasútmenetrend</title>
 </head>
 <body>
@@ -15,19 +15,29 @@
             </div>
             <div>
                 <nav class="navigation-bar">
+                    
                     <a href="/jaratok">járatok</a>
                     <a href="/vonatok">vonatok</a>
                     <a href="/allomasok">állomások</a>
                     <a href="/jegyek">jegyek</a>
-                    <a href="/felhasznalok">felhasználók</a>
                     <a href="/kedvezmenyek">kedvezmények</a>
+                    {% if admin != 0 %}
+                    <a href="/felhasznalok">felhasználók</a>
                     <a href="/alkalmazottak">alkalmazottak</a>
                     <a href="/szabadsagok">szabadsagok</a>
                     <a href="/munkabeosztas">munkabeosztás</a>
                     <a href="/alaplekerdezesek">Alap Lekérdezések</a>
+                    <a href="/osszetett_lekerdezesek">Összetett Lekérdezések</a>
+                    {% endif %}
+                    <a href="/kijelentkezes">Kijelentkezés</a>
                 </nav>
             </div>
         </header>
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
     </div>
 </body>
 </html>
