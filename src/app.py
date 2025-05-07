@@ -8,8 +8,10 @@ import getpass
 import oracledb
 
 
-un = input("Enter database username: ").strip()
-pw = getpass.getpass("Enter database password for " + un + ": ")
+#un = input("Enter database username: ").strip()
+#pw = getpass.getpass("Enter database password for " + un + ": ")
+un = "C##Q8AUMD"
+pw = "Q8AUMD"
 
 def get_db():
     if 'db' not in g:
@@ -55,6 +57,8 @@ jarat_adatok = []
 
 felhasznalok = {}
 
+kedvezmeny_adatok = []
+
 
 @app.route("/")
 def index():
@@ -69,6 +73,66 @@ def index():
     if "user" not in session:
         return redirect(url_for("bejelentkezes"))
     return render_template("index.html", user=session["user"], admin=felhasznalok[session["user"]]["administrator"])
+
+
+@app.route("/vasarlas")
+def vasarlas():
+    global felhasznalok
+    global kedvezmeny_adatok
+    global jegy_adatok
+    global jarat_adatok
+
+    connection, cursor = get_db()
+
+    felhasznalok = {}
+    for row in cursor.execute("select * from Felhasznalo"):
+        felhasznalok[row[0]] = {"password": row[1], "szul_ido": row[2], "alkalmazott": row[3], "administrator":row[4]}
+    
+    if "user" not in session:
+        return redirect(url_for("bejelentkezes"))
+
+    kedvezmeny_adatok = []
+    for row in cursor.execute("SELECT * FROM Kedvezmeny"):
+        kedvezmeny_adatok.append({"id": row[0], "nev": row[1], "mertek": row[2]})
+    
+    jegy_adatok = []
+    for row in cursor.execute("select * from Jegy"):
+        jegy_adatok.append({"id":row[0], "nev":row[1], "ar":row[2], "felhasznalhato":row[3]})
+    
+    jarat_adatok = []
+    for row in cursor.execute("select * from Jarat"):
+        jarat_adatok.append({"id":row[0], "indulas":row[1], "vonat":row[3], "utvonal":row[2]})
+    
+    if not request.args.get("jarat") is None:
+        v_jarat = request.args.get("jarat")
+        v_kedvezmeny = request.args.get("kedvezmeny")
+        v_jegy = request.args.get("jegy")
+
+        jegy_nev = ""
+        for j in jegy_adatok:
+            if j["id"] == int(v_jegy):
+                jegy_nev = j["nev"]
+                break
+        
+        print(v_kedvezmeny)
+        
+        if jegy_nev == "Másodosztály":
+            cursor.execute("insert into Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) values (SYSDATE, :felh, :kedv, :jegy, :jarat)", [session["user"], v_kedvezmeny, v_jegy, v_jarat])
+            connection.commit()
+        elif jegy_nev == "Elsőosztály":
+            cursor.execute("insert into Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) values (SYSDATE, :felh, :kedv, :jegy, :jarat)", [session["user"], v_kedvezmeny, v_jegy, v_jarat])
+            connection.commit()
+        else:
+            cursor.execute("insert into Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) values (SYSDATE, :felh, :kedv, :jegy, NULL)", [session["user"], v_kedvezmeny, v_jegy])
+            connection.commit()
+        
+        return redirect(url_for("index"))
+
+
+    return render_template("vasarlas.html", user=session["user"], kedvezmenyek=kedvezmeny_adatok, jegyek=jegy_adatok, jaratok=jarat_adatok)
+    
+
+
 
 @app.route("/bejelentkezes", methods=["GET", "POST"])
 def bejelentkezes():
@@ -603,6 +667,7 @@ def felhasznalok_kezeles():
 
 @app.route("/kedvezmenyek", methods=["POST", "GET"])
 def kedvezmenyek():
+    global kedvezmeny_adatok
     connection, cursor = get_db()
 
     felhasznalok = {}

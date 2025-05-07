@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<form>
+    <select name="kedvezmeny">
+        {% for kedvezmeny in kedvezmenyek %}
+            <option value="{{kedvezmeny.id}}" {% if kedvezmeny.id == kedvezmenyek[0].id %}selected{% endif %}>{{kedvezmeny.nev}}: {{kedvezmeny.mertek}}%</option>
+        {% endfor %}
+    </select>
+
+    <select name="jegy">
+        {% for jegy in jegyek %}
+            <option value="{{jegy.id}}" {% if jegy.id == jegyek[0].id %}selected{% endif %}>{{jegy.nev}}: {{jegy.ar}}Ft</option>
+        {% endfor %}
+    </select>
+
+    <select name="jarat">
+        {% for jarat in jaratok %}
+            <option value="{{jarat.id}}" {% if jarat.id == jaratok[0].id %}selected{% endif %}>{{jarat.id}} {{jarat.indulas}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Vásárlás">
+</form>
+
+{% endblock %}
