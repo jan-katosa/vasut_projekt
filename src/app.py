@@ -1120,7 +1120,7 @@ def osszetett_lekerdezesek():
 def api_jaratkereso():
     connection, cursor = get_db()
     
-    destination_loc = request.form.get('jaratkereso_hova')
+    destination_loc = request.form.get('jaratkereso_hova', type=str)
 
     result = []
     for row in cursor.execute( 
@@ -1137,7 +1137,7 @@ def api_jaratkereso():
 def api_utasszam():
     connection, cursor = get_db()
     
-    year = request.form.get('utasszam_ev')
+    year = request.form.get('utasszam_ev', type=int)
 
     result = []
     for row in cursor.execute( 
@@ -1229,8 +1229,8 @@ def api_onlinejegy():
 def api_berszam():
     connection, cursor = get_db()
     
-    year = request.form.get('ber_ev')
-    month = request.form.get('ber_honap')
+    year = request.form.get('ber_ev', type=int)
+    month = request.form.get('ber_honap', type=int)
 
     result = []
     for row in cursor.execute( 
