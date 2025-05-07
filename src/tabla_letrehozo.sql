@@ -379,3 +379,33 @@ SELECT
       )
     ) AS nyereseg
 FROM dual;
+
+
+
+--Trigger, hogy ne lehessen véletlen ugyanarra a napra egy személynek szabit felvenni
+CREATE OR REPLACE TRIGGER szabadsag_duplikacio_ellenorzes_trigger
+BEFORE INSERT OR UPDATE ON Szabadsag
+FOR EACH ROW
+DECLARE
+    van_egyezes NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO van_egyezes
+    FROM Szabadsag
+    WHERE a_azonosito = :NEW.a_azonosito
+      AND (
+            (:NEW.mettol BETWEEN mettol AND meddig) OR
+            (:NEW.meddig BETWEEN mettol AND meddig) OR
+            (mettol BETWEEN :NEW.mettol AND :NEW.meddig) OR
+            (meddig BETWEEN :NEW.mettol AND :NEW.meddig)
+          )
+      AND sz_azonosito != :NEW.sz_azonosito; -- Saját rekord kivétele UPDATE esetén
+
+    IF van_egyezes > 0 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Ez az alkalmazott már rendelkezik szabadsággal ezen a napon vagy átfedésben.');
+    END IF;
+END;
+/
+
+
+ALTER TRIGGER szabadsag_duplikacio_ellenorzes_trigger ENABLE;
+COMMIT;
