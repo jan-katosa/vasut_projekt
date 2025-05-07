@@ -1055,11 +1055,11 @@ def osszetett_lekerdezesek():
 def api_jaratkereso():
     connection, cursor = get_db()
     
-    destination_loc = request.form['jaratkereso_hova']
+    destination_loc = request.form.get('jaratkereso_hova')
 
     result = []
     for row in cursor.execute( 
-        f"SELECT Jarat.jarat_azonosito, Jarat.nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND a_azonosito = SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito AND nev = {destination_loc}"
+        f'SELECT Jarat.jarat_azonosito, Jarat.nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND a_azonosito = SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito AND nev = {destination_loc}'
     ):
         result.append({
             "jarat_azonosito": row[0],
@@ -1072,11 +1072,11 @@ def api_jaratkereso():
 def api_utasszam():
     connection, cursor = get_db()
     
-    year = request.form['utasszam_ev']
+    year = request.form.get('utasszam_ev')
 
     result = []
     for row in cursor.execute( 
-        f"SELECT jarat_azonosito SUM(utasszam) as sum, elso_osztalyu_helyek as maxelso, masod_osztalyu_helyek as maxmasod FROM Ut, Vonat WHERE YEAR(datum) = {year} GROUP BY jarat_azonosito HAVING COUNT(utasszam) > 0"
+        f'SELECT jarat_azonosito, SUM(utasszam), elso_osztalyu_helyek, masod_osztalyu_helyek FROM Ut, Vonat WHERE YEAR(datum) = {year} GROUP BY jarat_azonosito HAVING COUNT(utasszam) > 0'
 
     ):
         result.append({
@@ -1165,12 +1165,12 @@ def api_onlinejegy():
 def api_berszam():
     connection, cursor = get_db()
     
-    year = request.form['ber_ev']
-    month = request.form['ber_honap']
+    year = request.form.get('ber_ev')
+    month = request.form.get('ber_honap')
 
     result = []
     for row in cursor.execute( 
-        f"SELECT Alkalmazott.a_azonosito, nev, beosztas, kezdet, veg, oraber FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY a_azonosito HAVING COUNT(a_azonosito) > 0"
+        f'SELECT Alkalmazott.a_azonosito, nev, beosztas, kezdet, veg, oraber FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND YEAR(milyen_nap) = {year} AND MONTH(milyen_nap) = {month} GROUP BY Alkalmazott.a_azonosito HAVING COUNT(Munkabeosztas.a_azonosito) > 0'
     ):
         result.append({
             "a_azonosito": row[0],
