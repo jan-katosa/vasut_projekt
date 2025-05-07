@@ -1076,13 +1076,12 @@ def api_utasszam():
 
     result = []
     for row in cursor.execute( 
-        f'SELECT jarat_azonosito, SUM(utasszam), elso_osztalyu_helyek, masod_osztalyu_helyek FROM Ut, Vonat WHERE YEAR(datum) = {year} GROUP BY jarat_azonosito HAVING COUNT(utasszam) > 0'
-
+        f'SELECT Jarat.jarat_azonosito, elso_osztalyu_helyek, masod_osztalyu_helyek, SUM(vasarlas_azonosito) FROM Jarat, Vonat, Vasarlas WHERE Jarat.jarat_azonosito = Vasarlas.jarat_azonosito AND YEAR(idopont) = {year} GROUP BY Jarat.jarat_azonosito HAVING COUNT(vasarlas_azonosito) > 0'
     ):
         result.append({
             "jarat_azonosito": row[0],
-            "utasszam": row[1],
-            "max_hely": row[2] + row[3]
+            "utasszam": row[3],
+            "max_hely": row[1] + row[2]
         })
     return jsonify(result)
 
