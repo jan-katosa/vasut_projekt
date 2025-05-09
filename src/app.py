@@ -1132,6 +1132,26 @@ def api_jaratkereso():
         })
     return jsonify(result)
 
+'''
+Javított járatkereső, mérföldkő értékelése után használható
+
+@app.route("/api_jaratkereso")
+def api_jaratkereso():
+    connection, cursor = get_db()
+    
+    destination_loc = request.args.get('jaratkereso_hova', type=str)
+
+    result = []
+    for row in cursor.execute( 
+        f"SELECT Jarat.jarat_azonosito, nev FROM Jarat, Allomas, Csatlakozas WHERE Jarat.jarat_azonosito = Csatlakozas.jarat_azonosito AND a_azonosito IN (SELECT a_azonosito FROM Allomas, Csatlakozas WHERE a_azonosito = masodik_a_azonosito AND nev = '{destination_loc}')"
+    ):
+        result.append({
+            "jarat_azonosito": row[0],
+            "nev": row[1]
+        })
+    return jsonify(result)
+'''
+
 
 @app.route("/api_utasszam")
 def api_utasszam():
@@ -1149,6 +1169,27 @@ def api_utasszam():
             "max_hely": row[1] + row[2]
         })
     return jsonify(result)
+
+'''
+Javított utasszám, mérföldkő értékelése után használható
+
+@app.route("/api_utasszam")
+def api_utasszam():
+    connection, cursor = get_db()
+    
+    year = request.args.get('utasszam_ev', type=int)
+
+    result = []
+    for row in cursor.execute( 
+        f'SELECT Jarat.jarat_azonosito, elso_osztalyu_helyek, masod_osztalyu_helyek, SUM(vasarlas_azonosito) FROM Jarat, Vonat, Vasarlas WHERE Jarat.jarat_azonosito = Vasarlas.jarat_azonosito AND EXTRACT(year FROM idopont) = {year} GROUP BY Jarat.jarat_azonosito, elso_osztalyu_helyek, masod_osztalyu_helyek HAVING COUNT(Jarat.jarat_azonosito) > 0'
+    ):
+        result.append({
+            "jarat_azonosito": row[0],
+            "utasszam": row[3],
+            "max_hely": row[1] + row[2]
+        })
+    return jsonify(result)
+'''
 
 
 @app.route("/api_eveskimutatas")
@@ -1244,6 +1285,30 @@ def api_berszam():
             "ber": ((row[4] - row[3]) / 60) * row[5]
         })
     return jsonify(result)
+
+'''
+Javított bérszámítás, mérföldkő értékelése után használható
+
+@app.route("/api_berszam")
+def api_berszam():
+    connection, cursor = get_db()
+    
+    year = request.args.get('ber_ev', type=int)
+    month = request.args.get('ber_honap', type=int)
+
+    result = []
+    for row in cursor.execute( 
+        f'SELECT Alkalmazott.a_azonosito, nev, beosztas, kezdet, veg, oraber FROM Alkalmazott, Munkabeosztas WHERE Alkalmazott.a_azonosito = Munkabeosztas.a_azonosito AND EXTRACT(year FROM milyen_nap) = {year} AND EXTRACT(month FROM milyen_nap) = {month} GROUP BY Alkalmazott.a_azonosito,  nev, beosztas, kezdet, veg, oraber HAVING COUNT(Alkalmazott.a_azonosito) > 0'
+    ):
+        result.append({
+            "a_azonosito": row[0],
+            "nev": row[1],
+            "beosztas": row[2],
+            "munkaido (ora)": (row[4] - row[3]) / 60,
+            "ber": ((row[4] - row[3]) / 60) * row[5]
+        })
+    return jsonify(result)
+'''
 
 
 @app.route("/api_jegyvasarlas")
