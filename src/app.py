@@ -1096,7 +1096,6 @@ def api_munkabeosztas():
 @app.route("/osszetett_lekerdezesek", methods=['POST', 'GET'])
 def osszetett_lekerdezesek():
     global felhasznalok
-    global alapadatok
 
     connection, cursor = get_db()
 
@@ -1112,7 +1111,12 @@ def osszetett_lekerdezesek():
     if "user" not in session or felhasznalok[session["user"]]["administrator"] == 0:
         return redirect(url_for("bejelentkezes"))
     
-    return render_template("osszetett_lekerdezesek.html")
+
+    allomas_nevek = []
+    for row in cursor.execute("SELECT * FROM Allomas"):
+        allomas_nevek.append({"nev":row[1]})
+    
+    return render_template("osszetett_lekerdezesek.html", allomas_nevek=allomas_nevek)
 
 
 @app.route("/api_jaratkereso")

@@ -14,11 +14,9 @@
                 <label>Járatkereső</label>
                 <label>Uticél</label>
                 <select name="jaratkereso_hova">
-                    <option value="Budapest-Keleti">Budapest-Keleti</option>
-                    <option value="Debrecen">Debrecen</option>
-                    <option value="Szeged">Szeged</option>
-                    <option value="Győr">Győr</option>
-                    <option value="Pécs">Pécs</option>
+                    {% for nev in allomas_nevek %}
+                    <option data-id="{{nev.nev}}" value="{{nev.nev}}">{{nev.nev}}</option>
+                    {% endfor %}
                 </select>
                 <button type="submit">Keresés</button>
             </form>
