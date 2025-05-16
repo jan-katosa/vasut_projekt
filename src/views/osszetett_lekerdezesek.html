@@ -14,8 +14,8 @@
                 <label>Járatkereső</label>
                 <label>Uticél</label>
                 <select name="jaratkereso_hova">
-                    {% for nev in allomas_nevek %}
-                    <option data-id="{{nev.nev}}" value="{{nev.nev}}">{{nev.nev}}</option>
+                    {% for allomas in allomas_adatok %}
+                    <option data-id="{{allomas.nev}}" value="{{allomas.nev}}">{{allomas.nev}}</option>
                     {% endfor %}
                 </select>
                 <button type="submit">Keresés</button>
@@ -24,7 +24,32 @@
 
         <div>
             <form action="{{url_for('api_jegyvasarlas')}}">
-                <label>Jegyvásárlás</label>
+                <label>Jegyvásárlások listázása</label>
+                
+                <label>Kedvezmények
+                    <select name="jvasar_kedv">
+                        {% for kedvezmeny in kedvezmeny_adatok %}
+                        <option data-id="kedvezmeny.k_azonosito" value="{{kedvezmeny.k_azonosito}}">{{kedvezmeny.nev}}: {{kedvezmeny.kedvezmeny_szazalek}}%</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>Jegy
+                    <select name="jvasar_jegy">
+                        {% for jegy in jegy_adatok %}
+                        <option data-id="jegy.jegy_azonosito" value="{{jegy.jegy_azonosito}}">{{jegy.nev}}: {{jegy.ar}}Ft</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <label>Járat
+                    <select name="jvasar_jarat">
+                        {% for jarat in jarat_adatok %}
+                        <option data-id="jarat.jarat_azonosito" value="{{jarat.jarat_azonosito}}">{{jarat.jarat_azonosito}}. Járat: {{jarat.cs_azonosito}}. Csatlakozás: {{jarat.indulas}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
                 <button type="submit">Keresés</button>
             </form>
         </div>
@@ -43,6 +68,14 @@
         <div>
             <form action="{{url_for('api_arustat')}}">
                 <label>Árúsítási statisztika</label>
+                <label>Válassz ki egy évet:<input name="stat_ev" type="number" min="1990" max="2025" step="1" value="2025"></label>
+                <label>Jegy neve
+                    <select name="stat_jegy">
+                        {% for jegy in jegy_adatok %}
+                        <option data-id="jegy.jegy_azonosito" value="{{jegy.jegy_azonosito}}">{{jegy.nev}}</option>
+                        {% endfor %}
+                    </select>
+                </label>
                 <button type="submit">Keresés</button>
             </form>
         </div>

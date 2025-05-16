@@ -1096,6 +1096,10 @@ def api_munkabeosztas():
 @app.route("/osszetett_lekerdezesek", methods=['POST', 'GET'])
 def osszetett_lekerdezesek():
     global felhasznalok
+    global allomas_adatok
+    global jegy_adatok
+    global jarat_adatok
+    global kedvezmeny_adatok
 
     connection, cursor = get_db()
 
@@ -1112,11 +1116,38 @@ def osszetett_lekerdezesek():
         return redirect(url_for("bejelentkezes"))
     
 
-    allomas_nevek = []
+    allomas_adatok = []
     for row in cursor.execute("SELECT * FROM Allomas"):
-        allomas_nevek.append({"nev":row[1]})
+        allomas_adatok.append({"nev":row[1]})
+
+
+    jegy_adatok = []
+    for row in cursor.execute("SELECT * FROM Jegy"):
+        jegy_adatok.append({
+            "jegy_azonosito":row[0],
+            "nev": row[1],
+            "ar": row[2]
+            })
     
-    return render_template("osszetett_lekerdezesek.html", allomas_nevek=allomas_nevek)
+
+    jarat_adatok = []
+    for row in cursor.execute("SELECT * FROM Jarat"):
+        jarat_adatok.append({
+            "jarat_azonosito": row[0],
+            "indulas": row[1],
+            "cs_azonosito": row[2]
+        })
+    
+    
+    kedvezmeny_adatok = []
+    for row in cursor.execute("SELECT * FROM Kedvezmeny"):
+        kedvezmeny_adatok.append({
+            "k_azonosito": row[0],
+            "nev": row[1],
+            "kedvezmeny_szazalek": row[2]
+        })
+
+    return render_template("osszetett_lekerdezesek.html", allomas_adatok=allomas_adatok, jegy_adatok=jegy_adatok, jarat_adatok=jarat_adatok, kedvezmeny_adatok=kedvezmeny_adatok)
 
 
 @app.route("/api_jaratkereso")
@@ -1208,8 +1239,12 @@ def api_eveskimutatas():
 def api_arustat():
     connection, cursor = get_db()
     
+    jegy = request.args.get('stat_jegy', type=int)
+    year = request.args.get('stat_ev', type=int)
+
     result = []
-    for row in cursor.execute( 
+    for row in cursor.execute(
+        f"SELECT vasarlas_azonosito, felhasznalonev, idopont, ar, kedvezmeny_szazalek FROM Vasarlas, Jegy, Kedvezmeny WHERE Vasarlas.jegy_azonosito = Jegy.jegy_azonosito AND Vasarlas.jegy_azonosito = {jegy} AND EXTRACT(year FROM idopont) = {year} GROUP BY felhasznalonev, idopont, ar, kedvezmeny_szazalek, vasarlas_azonosito HAVING COUNT(felhasznalonev) > 0"
     ):
         result.append({
         })
@@ -1253,9 +1288,19 @@ def api_berszam():
 def api_jegyvasarlas():
     connection, cursor = get_db()
     
+
+    kedvezmeny = request.args.get('jvasar_kedv', type=int)
+    jegy = request.args.get('jvasar_jegy', type=int)
+    jarat = request.args.get('jvasar_jarat', type=int)
+
+
     result = []
-    for row in cursor.execute( 
+    for row in cursor.execute(
+        f"SELECT vasarlas_azonosito, felhasznalonev, idopont FROM Vasarlas, Kedvezmeny, Jegy, Jarat WHERE Vasarlas.k_azonosito = Kedvezmeny.k_azonosito = {kedvezmeny} AND Vasarlas.jegy_azonosito = Jegy.jegy_azonosito = {jegy} AND Vasarlas.jarat_azonosito = Jarat.jarat_azonosito = {jarat} GROUP BY idopont Having COUNT(idopont) > 0"
     ):
         result.append({
+            "vasarlas_azonosito": row[0],
+            "felhasznalonev": row[1],
+            "idopont": row[2]
         })
     return jsonify(result)
