@@ -1296,7 +1296,7 @@ def api_jegyvasarlas():
 
     result = []
     for row in cursor.execute(
-        f"SELECT vasarlas_azonosito, felhasznalonev, idopont FROM Vasarlas, Kedvezmeny, Jegy, Jarat WHERE Vasarlas.k_azonosito = Kedvezmeny.k_azonosito = {kedvezmeny} AND Vasarlas.jegy_azonosito = Jegy.jegy_azonosito = {jegy} AND Vasarlas.jarat_azonosito = Jarat.jarat_azonosito = {jarat} GROUP BY idopont Having COUNT(idopont) > 0"
+        f"SELECT vasarlas_azonosito, felhasznalonev, idopont FROM Vasarlas, Kedvezmeny, Jegy, Jarat WHERE Vasarlas.k_azonosito = Kedvezmeny.k_azonosito AND Kedvezmeny.k_azonosito = {kedvezmeny} AND Vasarlas.jegy_azonosito = Jegy.jegy_azonosito AND Jegy.jegy_azonosito = {jegy} AND Vasarlas.jarat_azonosito = Jarat.jarat_azonosito AND Jarat.jarat_azonosito = {jarat} GROUP BY felhasznalonev, idopont, vasarlas_azonosito Having COUNT(felhasznalonev) > 0"
     ):
         result.append({
             "vasarlas_azonosito": row[0],
