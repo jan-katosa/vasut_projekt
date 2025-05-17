@@ -1244,9 +1244,14 @@ def api_arustat():
 
     result = []
     for row in cursor.execute(
-        f"SELECT vasarlas_azonosito, felhasznalonev, idopont, ar, kedvezmeny_szazalek FROM Vasarlas, Jegy, Kedvezmeny WHERE Vasarlas.jegy_azonosito = Jegy.jegy_azonosito AND Vasarlas.jegy_azonosito = {jegy} AND EXTRACT(year FROM idopont) = {year} GROUP BY felhasznalonev, idopont, ar, kedvezmeny_szazalek, vasarlas_azonosito HAVING COUNT(felhasznalonev) > 0"
+        f"SELECT DISTINCT vasarlas_azonosito, felhasznalonev, idopont, ar, kedvezmeny_szazalek FROM Vasarlas, Jegy, Kedvezmeny WHERE Vasarlas.jegy_azonosito = Jegy.jegy_azonosito AND Vasarlas.jegy_azonosito = {jegy} AND EXTRACT(year FROM idopont) = {year} GROUP BY vasarlas_azonosito, felhasznalonev, idopont, ar, kedvezmeny_szazalek HAVING COUNT(vasarlas_azonosito) > 0"
     ):
         result.append({
+            "vasarlas_azonosito": row[0],
+            "felhasznalonev": row[1],
+            "idopont": row[2],
+            "eredeti ar": row[3],
+            "kedvezmenyes ar": row[3] * row[4] / 100
         })
     return jsonify(result)
 
@@ -1302,5 +1307,21 @@ def api_jegyvasarlas():
             "vasarlas_azonosito": row[0],
             "felhasznalonev": row[1],
             "idopont": row[2]
+        })
+    return jsonify(result)
+
+
+@app.route("/api_torzsvasarlo")
+def api_torzsvasarlo():
+    connection, cursor = get_db()
+    
+    result = []
+    for row in cursor.execute(
+         f"SELECT Felhasznalo.felhasznalonev, szuletesi_ido FROM Felhasznalo, Vasarlas WHERE Felhasznalo.felhasznalonev = Vasarlas.felhasznalonev GROUP BY Felhasznalo.felhasznalonev, szuletesi_ido HAVING COUNT(vasarlas_azonosito) > 20"
+    ):
+        result.append({
+            "felhasznalonev": row[0],
+            "szuletesi_ido": row[1],
+            "vasarlasok": row[2]
         })
     return jsonify(result)
