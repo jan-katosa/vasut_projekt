@@ -276,12 +276,24 @@ INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('Diák', 500, 1);
 INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('Nyugdíjas', 500, 1);
 INSERT INTO Jegy (nev, ar, felhasznalhato) VALUES ('MÁK-ONYF', 100, 1);
 
-
+--Régi vonatok
 INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (50, 100);
 INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (60, 120);
 INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (70, 140);
 INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (80, 160);
 INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (90, 180);
+--Új vonatok
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (60, 110);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (70, 120);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (80, 130);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (90, 140);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (100, 150);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (55, 115);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (65, 135);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (45, 105);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (85, 160);
+INSERT INTO Vonat (elso_osztalyu_helyek, masod_osztalyu_helyek) VALUES (90, 150);
+
 
 INSERT INTO Allomas (nev, varos) VALUES ('Budapest-Keleti', 'Budapest');
 INSERT INTO Allomas (nev, varos) VALUES ('Debrecen', 'Debrecen');
@@ -295,19 +307,114 @@ INSERT INTO Csatlakozas (idotartam, hossz, elso_a_azonosito, masodik_a_azonosito
 INSERT INTO Csatlakozas (idotartam, hossz, elso_a_azonosito, masodik_a_azonosito, jarat_azonosito)  VALUES (75, 40, 2, 3, 4);
 INSERT INTO Csatlakozas (idotartam, hossz, elso_a_azonosito, masodik_a_azonosito, jarat_azonosito)  VALUES (90, 50, 4, 5, 5);
 
-
+--Új járatok
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-May-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-May-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-May-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-May-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
+INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-May-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
+--Régi járatok
 INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 1, 1);
 INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 14:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 2, 2);
 INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 15:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 3, 3);
 INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 16:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 4, 4);
 INSERT INTO Jarat (indulas, cs_azonosito, vonat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 17:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 5, 5);
 
-INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
-INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Orbán Viktor', 5, 2, 3);
-INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
-INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
-INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+--Új vásárlások
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-01 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-03 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-05 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-06 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-07 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-08 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-09 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-11 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-12 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-13 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-14 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-15 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-17 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-25 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
 
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-01 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-02 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-05 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-06 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-07 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-08 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-09 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-10 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-11 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-12 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-15 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-17 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-20 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-02 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-03 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-05 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-06 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-07 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-08 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-09 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-10 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-16 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Mar-18 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-05 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-05 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-07 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-08 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-10 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-11 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-12 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-13 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-13 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-14 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-15 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-16 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-17 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Apr-19 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-02 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-03 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-03 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-06 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-07 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-10 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-11 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-12 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-16 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-May-18 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-05 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-05 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Orbán Viktor', 5, 2, 3);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-14 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-15 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-16 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-17 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-19 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
 
 
 INSERT INTO Alkalmazott (nev, beosztas, oraber) VALUES ('Kovács János', 'Jegyellenőr', 2000);

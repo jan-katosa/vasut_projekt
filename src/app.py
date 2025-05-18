@@ -1317,7 +1317,7 @@ def api_torzsvasarlo():
     
     result = []
     for row in cursor.execute(
-         f"SELECT Felhasznalo.felhasznalonev, szuletesi_ido FROM Felhasznalo, Vasarlas WHERE Felhasznalo.felhasznalonev = Vasarlas.felhasznalonev AND alkalmazott = 0 AND administrator = 0 GROUP BY Felhasznalo.felhasznalonev, szuletesi_ido HAVING COUNT(vasarlas_azonosito) > 20"
+         f"SELECT Felhasznalo.felhasznalonev, szuletesi_ido FROM Felhasznalo, Vasarlas WHERE Felhasznalo.felhasznalonev = Vasarlas.felhasznalonev AND alkalmazott = 0 AND administrator = 0 GROUP BY Felhasznalo.felhasznalonev, szuletesi_ido HAVING COUNT(vasarlas_azonosito) >= 20"
     ):
         result.append({
             "felhasznalonev": row[0],
