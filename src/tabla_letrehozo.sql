@@ -429,6 +429,7 @@ INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-04-11'
 INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-04-21', 'YYYY-MM-DD'), TO_DATE('2024-04-30', 'YYYY-MM-DD'), 3);
 INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-05-01', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'), 4);
 INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2024-05-11', 'YYYY-MM-DD'), TO_DATE('2024-05-20', 'YYYY-MM-DD'), 5);
+INSERT INTO Szabadsag (mettol, meddig, a_azonosito) VALUES (TO_DATE('2025-05-10', 'YYYY-MM-DD'), TO_DATE('2025-05-20', 'YYYY-MM-DD'), 5);
 
 
 INSERT INTO Munkabeosztas (milyen_nap, kezdet, veg, a_azonosito) VALUES (DATE '2025-04-06', 480, 960, 1);

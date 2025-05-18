@@ -1256,14 +1256,21 @@ def api_arustat():
     return jsonify(result)
 
 
-@app.route("/api_onlinejegy")
-def api_onlinejegy():
+@app.route("/api_hosszuszab")
+def api_hosszuszab():
     connection, cursor = get_db()
     
+    year = request.args.get('nemd_ev', type=int)
+    month = request.args.get('nemd_honap', type=int)
+
     result = []
-    for row in cursor.execute( 
+    for row in cursor.execute(
+        f"SELECT DISTINCT Alkalmazott.a_azonosito, nev, beosztas FROM Alkalmazott, Szabadsag WHERE EXTRACT(year FROM mettol) = {year} AND EXTRACT(month FROM mettol) = {month} AND Alkalmazott.a_azonosito IN (SELECT Alkalmazott.a_azonosito FROM Alkalmazott, Szabadsag WHERE Alkalmazott.a_azonosito = Szabadsag.a_azonosito AND (EXTRACT(day FROM meddig) - EXTRACT(day FROM mettol)) > 5)"
     ):
         result.append({
+            "a_azonosito": row[0],
+            "nev": row[1],
+            "beosztas": row[2]
         })
     return jsonify(result)
 
