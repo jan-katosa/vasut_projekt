@@ -254,14 +254,25 @@ COMMIT;
 INSERT INTO Felhasznalo VALUES ('Kis Béla', 'kisbela1', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 1, 0);
 INSERT INTO Felhasznalo VALUES ('Adminisztrátor Ármin', 'Adminvagyok', TO_DATE('1985-05-15', 'YYYY-MM-DD'), 1, 1);
 INSERT INTO Felhasznalo VALUES ('Hát Izsák', 'Vicces00', TO_DATE('1995-07-20', 'YYYY-MM-DD'), 1, 0);
-INSERT INTO Felhasznalo VALUES ('Vevő Evelin', 'VE12345', TO_DATE('2000-12-10', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Vevő Evelin', 'VE12345', TO_DATE('2008-12-10', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Adminisztrátor Ádám', 'Testvér2', TO_DATE('1988-04-25', 'YYYY-MM-DD'), 1, 1);
 INSERT INTO Felhasznalo VALUES ('Geiger Dániel', 'GEG123', TO_DATE('2003-04-10', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Macska Alexandra', 'maxaxa343', TO_DATE('2002-10-21', 'YYYY-MM-DD'), 0, 0);
-INSERT INTO Felhasznalo VALUES ('Macska Sándor', 'masand434', TO_DATE('2003-10-21', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Macska Sándor', 'masand434', TO_DATE('2009-10-21', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Szabó Tamás', 'Goated12312', TO_DATE('1947-08-13', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('Orbán Viktor', 'O1G', TO_DATE('1960-11-11', 'YYYY-MM-DD'), 0, 0);
 INSERT INTO Felhasznalo VALUES ('asd', 'scrypt:32768:8:1$W6Un2OWiKJpqYzSe$67f2a346b1ac9d17fa2b06cc56dd37b0a9493af21d81a849adcbc5592b4c335157d9f74644f4eeb3f5e802545f478bbbe2d16160c3f601baeb982da2d00c61a6', TO_DATE('1995-01-10', 'YYYY-MM-DD'), 0, 1);
+INSERT INTO Felhasznalo VALUES ('Nagy Hanna', 'scrypt:32768:8:1$9XoYpuqISvspZfgD$3f342dd98cbac8519e5ae86d6b096544170e363fd651426c6077bce9213928fe46cd341f161adb660d0a57cff1262ffbfb368b9fb0a9c98cae513e11a2ecd872', TO_DATE('1990-10-19', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Kis Anna', 'scrypt:32768:8:1$MdLmkuKSax0KhUxn$7c3d2908e0456b4aefc4750f9909858a3f1596a9fdc4e20be4e0352ac1cf7b4a4a7b3e3b87bbe913b384588148d0ea8f3f36fc69c6106b0d225adb763f2dd9db', TO_DATE('2003-01-21', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Pató Pál', 'scrypt:32768:8:1$eaUbnE913jHTWgAs$1a018039b32264d8cd028b91050d4fc33152d940212373e22ebc814b0e84bbb357c63d91b86628fca015b518aa9887b3a1afe52bd17a59d628536645d125c7e7', TO_DATE('1977-05-01', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Kató Katalin', 'scrypt:32768:8:1$ljunH5jGIEgcjtja$74ea4df3a79175b69afedda8846808bf758ab7e17c668f8131eec653cac90f0e87bbfa950ed7e432cf37ca6e4aeab774c9499711b1a74ea49f3d057b49646da9', TO_DATE('1993-07-30', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Mammama Miklós', 'scrypt:32768:8:1$lzEMsKhoysPsUyAa$3f720ce58f4013c7cb21ebbde9be40d1c02d6502fc7df855153a524a4dccd77d5abff2224a157822b0618d9ba458deffe5beeb760882176d095da0d5f94fe66f', TO_DATE('1964-08-08', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Gara Gábor', 'scrypt:32768:8:1$af3kXbAW7azQ5C4g$04780269974417afd5185f282a1220ce4eb992b821fc4eac062f10d21aea29b3fbdeed3cadec982397a44c74e9a6bd9c8afb01d5e24a0a6e68b9ef4d1c44a47b', TO_DATE('1969-12-05', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Lakatos Teofil', 'scrypt:32768:8:1$Jp341lU502KwsFMA$0599cd7060347ccd52b41e868410b443ace7d8b16393943dae50df9df4bff9a0e9bcfa9cdee26e7604c38b5f87a7f9c5c07ff13325ea0dfdf2139f983a8eed2c', TO_DATE('1996-03-12', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Vak Béla', 'scrypt:32768:8:1$SOKYmKkYAa46ZpEM$d74cf65c19f5f2c9ef5004557d2170d68b6679aaada7a18ede975c00641f54319a19eaee5f9e1d5447c7a8320e6b345980d3c73fd66ca3d8975baa82b37c4acb', TO_DATE('1947-06-06', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Liptai Dávid', 'scrypt:32768:8:1$iNOvfS1X48FLhpnA$0e46de5613fed8fde67d51acebcc5dae5cb6e68bd550b8964c687fa20aaf9471f2c4745784e4882b304feeeeeab01320922953660ce2fd8592e31427a5361292', TO_DATE('2000-10-22', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Szellő István', 'scrypt:32768:8:1$SHDAZVH7DUQs1jKm$b31161fff6dcf2fe6c5b48e70a35ba1d1266e20c8c0c690ebf75d04d9a63a7469ba583c839f038e909f8392e2c4d4c1e5077ec53222622c5a4007245a2247176', TO_DATE('1960-02-20', 'YYYY-MM-DD'), 0, 0);
+INSERT INTO Felhasznalo VALUES ('Erős Antónia', 'scrypt:32768:8:1$TZraeCSt9f6qnabs$15aea3d87bbee4506cebd148c2336ddfe3e68708cfb24cb778cdbd30acfe9fa24352186a184720232f8b7acad7ecedcbfe50ea423826637754e79ab3794f1113', TO_DATE('1970-04-03', 'YYYY-MM-DD'), 0, 0);
 
 
 INSERT INTO Kedvezmeny (nev, kedvezmeny_szazalek) VALUES ('Diák', 50);
@@ -355,6 +366,33 @@ INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jara
 INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-15 13:20:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 1, 2, 2);
 INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-17 13:30:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Sándor', 1, 2, 2);
 INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jan-25 13:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-03 13:44:02', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vak Béla', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-04 11:44:14', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vak Béla', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-05 13:22:22', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-06 10:50:13', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-07 12:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Nagy Hanna', 3, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-08 10:11:42', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-11 11:21:27', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-12 12:32:02', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Nagy Hanna', 3, 1, 4);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-13 13:41:04', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Kis Anna', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-14 14:52:15', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Kis Anna', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-15 15:05:22', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Liptai Dávid', 4, 1, 1);
+
+
+
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-23 13:44:02', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vak Béla', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-24 11:44:14', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vak Béla', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-25 13:22:22', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-26 10:50:13', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-27 12:40:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Szabó Tamás', 2, 1, 5);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-20 10:11:42', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-21 11:21:27', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-22 12:32:02', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-23 13:41:04', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Kis Anna', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-24 14:52:15', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Kis Anna', 1, 1, 1);
+INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Jun-25 15:05:22', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Kis Anna', 1, 1, 1);
+
 
 INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-01 13:00:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Vevő Evelin', 1, 1, 1);
 INSERT INTO Vasarlas (idopont, felhasznalonev, k_azonosito, jegy_azonosito, jarat_azonosito) VALUES (TO_TIMESTAMP('2025-Feb-02 13:10:10', 'YYYY-Mon-DD HH24:MI:SS', 'NLS_DATE_LANGUAGE=AMERICAN'), 'Macska Alexandra', 5, 2, 3);
@@ -516,4 +554,44 @@ END;
 
 
 ALTER TRIGGER szabadsag_duplikacio_ellenorzes_trigger ENABLE;
+COMMIT;
+
+
+
+CREATE OR REPLACE PACKAGE tipusok_pkg AS
+    TYPE stat_cursor IS REF CURSOR;
+END tipusok_pkg;
+/
+
+CREATE OR REPLACE PROCEDURE Felhasznalo_Kedvezmeny_Statisztika (
+    p_eredmeny OUT tipusok_pkg.stat_cursor
+) AS
+BEGIN
+    OPEN p_eredmeny FOR
+        SELECT
+            f.felhasznalonev,
+            k.nev AS kedvezmeny_nev,
+            COUNT(*) AS hasznalatok_szama
+        FROM
+            Vasarlas v
+        JOIN Felhasznalo f ON v.felhasznalonev = f.felhasznalonev
+        JOIN Kedvezmeny k ON v.k_azonosito = k.k_azonosito
+        GROUP BY
+            f.felhasznalonev, k.nev
+        ORDER BY
+            f.felhasznalonev, hasznalatok_szama DESC;
+END;
+/
+
+
+SET SERVEROUTPUT ON;
+VARIABLE rc REFCURSOR;
+
+BEGIN
+    Felhasznalo_Kedvezmeny_Statisztika(:rc);
+END;
+/
+
+PRINT rc;
+
 COMMIT;

@@ -1331,3 +1331,28 @@ def api_torzsvasarlo():
             "szuletesi_ido": row[1]
         })
     return jsonify(result)
+
+
+@app.route("/kedvezmeny_statisztika")
+def kedvezmeny_statisztika():
+    connection, cursor = get_db()
+
+    eredmeny = []
+
+    try:
+        out_cursor = cursor.var(oracledb.CURSOR)
+        cursor.callproc("Felhasznalo_Kedvezmeny_Statisztika", [out_cursor])
+        stat_cursor = out_cursor.getvalue()
+
+        for row in stat_cursor:
+            eredmeny.append({
+                "felhasznalo": row[0],
+                "kedvezmeny": row[1],
+                "hasznalatok_szama": row[2]
+            })
+
+    except oracledb.DatabaseError as e:
+        error_obj, = e.args
+        return f"Hiba történt az eljárás meghívása közben: {error_obj.message}", 500
+
+    return render_template("kedvezmeny_statisztika.html", statisztika=eredmeny)
