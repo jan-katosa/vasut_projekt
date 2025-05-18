@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Kedvezmény használati statisztika</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Felhasználónév</th>
+            <th>Kedvezmény neve</th>
+            <th>Használatok száma</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for s in statisztika %}
+        <tr>
+            <td>{{ s.felhasznalo }}</td>
+            <td>{{ s.kedvezmeny }}</td>
+            <td>{{ s.hasznalatok_szama }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a href="index.html">Vissza a főoldalra</a>
+{% endblock %}
